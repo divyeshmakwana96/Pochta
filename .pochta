@@ -1,0 +1,60 @@
+{
+  "uploads": [
+    {
+      "path": "./email/assets/img/header.jpg",
+      "remoteImage": {
+        "url": "https://www.google.com/"
+      },
+      "date": 1560543443000,
+      "id": "be74e07d-225c-4a0c-a61b-343cd6e1c85e"
+    },
+    {
+      "path": "./email/assets/img/map.jpg",
+      "remoteImage": {
+        "url": "https://www.google.com/"
+      },
+      "date": 1560555814000,
+      "id": "75d35b3f-2e66-4749-b631-aac794f29391"
+    },
+    {
+      "path": "./email/assets/img/divider.png",
+      "remoteImage": {
+        "url": "https://www.google.com/"
+      },
+      "date": 1560539030000,
+      "id": "f21b23af-818a-403b-b23f-5c33d116979c"
+    },
+    {
+      "path": "./email/assets/img/screen-1.png",
+      "remoteImage": {
+        "url": "https://www.google.com/"
+      },
+      "date": 1560797105000,
+      "id": "309917c1-dad1-4b7a-9c3b-b456fd86ccb1"
+    },
+    {
+      "path": "./email/assets/img/screen-2.jpg",
+      "remoteImage": {
+        "url": "https://www.google.com/"
+      },
+      "date": 1560797137000,
+      "id": "1f19dd7e-bcdf-418f-ac35-afb56886f957"
+    },
+    {
+      "path": "./email/assets/img/screen-3.png",
+      "remoteImage": {
+        "url": "https://www.google.com/"
+      },
+      "date": 1560797165000,
+      "id": "10c9e1d2-8c98-401a-988f-e2ea23034e3a"
+    },
+    {
+      "path": "./email/assets/img/allergan.jpg",
+      "remoteImage": {
+        "url": "https://www.google.com/"
+      },
+      "date": 1584155651683,
+      "id": "5c9fb981-45d0-426e-ae0c-2a600a9384dd"
+    }
+  ]
+}
