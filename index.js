@@ -1,119 +1,87 @@
-const chalk = require('chalk')
-const clear = require('clear')
-const figlet = require('figlet')
+const path = require('path')
 
-const inquirer = require('./lib/inquirer')
+const clear = require('clear')
+const chalk = require('chalk')
+const ora = require('ora')
 
 // local helpers
+const finder = require('./lib/finder')
 const files = require('./lib/files')
-const profile = require('./lib/profile')
+const configs = require('./lib/configs')
 const parser = require('./lib/parser')
+const cache = require('./lib/cache')
+const inquirer = require('./lib/inquirer')
 const uploader = require('./lib/uploader')
+const mailer = require('./lib/mailer')
 
-// clear()
-
-// console.log(
-//     chalk.yellow(
-//         figlet.textSync('Pochta', { horizontalLayout: 'full' })
-//     )
-// )
-
-/// Upload files
-// uploader.upload({
-//         cloud_name: 'dadf1dqn7',
-//         api_key: '626932881987941',
-//         api_secret: '7S6IGTGQjJHVAz55KywLX3OXHWA'
-//     },
-//     ['tmp/marker.png', 'tmp/pacific_logo.png'],
-//     ['pochta', 'cloud', 'upload'],
-//     'pochta/test/inner',
-//     function (err, images) {
-//         console.log(images)
-// })
-
-// const run = async () => {
-//   let config = await profile.getStoredGlobalProfile()
-//   if (!config) {
-//     config = await profile.getGlobalProfile()
-//   }
-//
-//   console.log(config)
-// }
-//
-// run()
+// Clear all
+clear()
 
 const run = async () => {
 
-  try {
-    parser.parse()
-  } catch (e) {
-    console.log(chalk.red(e))
+  let didSaveConfigs = false
+
+  // Setup global profile
+  let globalConfigs = configs.getStoredGlobalProfile()
+  if (!globalConfigs) {
+    globalConfigs = await configs.getGlobalProfile()
+    didSaveConfigs = true
   }
 
-  return
-
-  // setup global profile
-  let globalProfile = await profile.getStoredGlobalProfile()
-  if (!globalProfile) {
-    console.log("Let's setup a global profile first.")
-    console.log(chalk.bgGreen("Global Profile:"))
-    globalProfile = await profile.getGlobalProfile()
+  // Local
+  let localConfigs = configs.getStoredLocalProfile()
+  if (!localConfigs) {
+    localConfigs = await configs.getLocalProfile()
+    didSaveConfigs = true
   }
 
-  // Create local profile it needed
-  let config
-  if (!files.fileExists('.config')) {
-    console.log("Let's setup project settings.")
-    console.log(chalk.bgGreen("Project Settings:"))
-
-    // subject
-    const subject = await inquirer.collectSubject()
-    config = { subject: subject.subject }
-
-    // to
-    let toRecipients = []
-    console.log(chalk.bgCyan("TO:"))
-    let shouldContinue = true
-    while (shouldContinue) {
-      const recipient = await inquirer.collectRecipient()
-      toRecipients.push({ name: recipient.name, email: recipient.email })
-      shouldContinue = recipient.more
-    }
-
-    config.to = toRecipients
-
-    // cc
-    const cc = await inquirer.shouldCollectCC()
-    if (cc.add) {
-      let ccRecipients = []
-      console.log(chalk.bgCyan("CC:"))
-      shouldContinue = true
-      while (shouldContinue) {
-        const recipient = await inquirer.collectRecipient()
-        ccRecipients.push({ name: recipient.name, email: recipient.email })
-        shouldContinue = recipient.more
-      }
-
-      config.cc = ccRecipients
-    }
-
-    // save to config
-    files.writeConfig(config)
-
-  } else {
-    config = files.readConfig()
+  if (didSaveConfigs) {
+    ora('saving...').succeed('Configs saved successfully!!')
   }
 
-  console.log(config)
+  // Rendering
+  const baseDir = './'
 
-  // Check if empty empty
+  // Render HTML
+  let html = await finder.findFilesInDirectory(baseDir)
+        .then(files => inquirer.askFileSelection(files)) // Ask for prompt
+        .then(answer => parser.parseHTML(path.join(baseDir, answer.file))) // render if needed or get content
+        .then(html => parser.parseImagesFromHTML(html)) // parse images
+        .then(parsed => cache.analyzeImagePaths(baseDir, parsed.html, parsed.paths)) // analyze images that needs to be uploaded
+        .then(result => uploader.uploadToCloudinary(globalConfigs.cloudinary, baseDir, result.uploadable, result.html)) // Uploads to Cloudinary
+        .then(result => cache.cacheUploads(baseDir, result.uploads, result.html)) // Save URLs to cache
+        .then(result => parser.render(result.html, result.cache)) // Render html with the remote urls
+        .catch(error => console.log(chalk.red(error)))
 
-  // console.log(chalk.green("Please enter 'To' Recipients"))
+  // Send with loader
+  if (html) {
+    const spinner = ora('sending...').start()
+    mailer.sendWithMailjet(globalConfigs.mailjet,
+        localConfigs.to,
+        {
+            email: globalConfigs.mailjet.from,
+            name: globalConfigs.name
+          },
+        localConfigs.subject,
+        localConfigs.cc,
+        {
+            email: globalConfigs.email,
+            name: globalConfigs.name
+          }, html)
+        .then(response => spinner.succeed('Email sent successfully!!'))
+        .catch(error => spinner.fail(`${chalk.red('There was an error while sending the email. ' + error)}`))
+  }
+
+
+  // Check if needs to optimize
+  // if (result && result.uploadables.length > 0) {
+  //   let question = await inquirer.askFileImageOptimization()
+  //   if (question.optimize) {
+  //     let optimized = await optimizer.optimizeImages(baseDir, result.uploadables)
+  //     console.log(optimized)
   //
-  // while (true) {
-  //   await inquirer.collectRecipients()
+  //   }
   // }
-  // console.log("end")
 }
 
 run()

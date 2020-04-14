@@ -115,3 +115,5 @@ dist
 .pnp.*
 .idea/
 email/
+build/*
+optimized/
