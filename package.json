@@ -1,14 +1,14 @@
 {
   "name": "pochta",
   "version": "1.0.0",
-  "description": "",
+  "description": "Email testing simplified",
+  "license": "MIT",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["mail", "mjml", "mailjet", "cloudinary"],
+  "author": "Divyesh Makwana",
   "dependencies": {
     "axios": "^0.19.2",
     "chalk": "^3.0.0",
@@ -24,5 +24,8 @@
     "lowdb": "^1.0.0",
     "mjml": "^4.6.2",
     "ora": "^4.0.3"
+  },
+  "bin": {
+    "ginit": "./index.js"
   }
 }
