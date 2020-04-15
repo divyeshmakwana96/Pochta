@@ -1,7 +1,7 @@
 {
   "name": "pochta-mjml",
   "description": "Test emails workflow simplified",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Divyesh Makwana (Home) @sleekuser",
   "bin": {
     "pochta": "./bin/run"
