@@ -46,9 +46,7 @@
     "/src"
   ],
   "homepage": "https://github.com/sleekuser/pochta",
-  "keywords": [
-    "oclif"
-  ],
+  "keywords": ["mail", "mjml", "mailjet", "cloudinary"],
   "license": "MIT",
   "main": "src/index.js",
   "oclif": {

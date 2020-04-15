@@ -55,10 +55,6 @@ setup hosting environments and send mjml/html test emails
 ```
 USAGE
   $ pochta send
-
-DESCRIPTION
-  ...
-  Extra documentation goes here
 ```
 
 _See code: [src/commands/send.js](https://github.com/sleekuser/pochta/blob/v1.0.1/src/commands/send.js)_
