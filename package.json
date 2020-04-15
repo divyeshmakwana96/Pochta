@@ -1,31 +1,55 @@
 {
   "name": "pochta",
-  "version": "1.0.0",
-  "description": "Email testing simplified",
-  "license": "MIT",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": ["mail", "mjml", "mailjet", "cloudinary"],
-  "author": "Divyesh Makwana",
-  "dependencies": {
-    "axios": "^0.19.2",
-    "chalk": "^3.0.0",
-    "cheerio": "^1.0.0-rc.3",
-    "clear": "^0.1.0",
-    "cli-progress": "^3.6.1",
-    "cloudinary": "^1.21.0",
-    "configstore": "^5.0.1",
-    "html-minifier": "^4.0.0",
-    "inquirer": "^7.1.0",
-    "lodash": "^4.17.15",
-    "lodash-id": "^0.14.0",
-    "lowdb": "^1.0.0",
-    "mjml": "^4.6.2",
-    "ora": "^4.0.3"
-  },
+  "description": "Test emails workflow simplified",
+  "version": "1.0.1",
+  "author": "Divyesh Makwana (Home) @sleekuser",
   "bin": {
-    "ginit": "./index.js"
+    "pochta": "./bin/run"
+  },
+  "bugs": "https://github.com/sleekuser/pochta/issues",
+  "dependencies": {
+    "@oclif/command": "^1.5.19",
+    "@oclif/config": "^1.15.1",
+    "@oclif/plugin-help": "^2.2.3"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1.22.2",
+    "@oclif/test": "^1.2.5",
+    "chai": "^4.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-oclif": "^3.1.0",
+    "globby": "^10.0.2",
+    "mocha": "^5.2.0",
+    "nyc": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json",
+    "/src"
+  ],
+  "homepage": "https://github.com/sleekuser/pochta",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "src/index.js",
+  "oclif": {
+    "commands": "./src/commands",
+    "bin": "pochta",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": "sleekuser/pochta",
+  "scripts": {
+    "postpack": "rm -f oclif.manifest.json",
+    "posttest": "eslint .",
+    "prepack": "oclif-dev manifest && oclif-dev readme",
+    "test": "nyc mocha --forbid-only \"test/**/*.test.js\"",
+    "version": "oclif-dev readme && git add README.md"
   }
 }
