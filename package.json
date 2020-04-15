@@ -10,7 +10,21 @@
   "dependencies": {
     "@oclif/command": "^1.5.19",
     "@oclif/config": "^1.15.1",
-    "@oclif/plugin-help": "^2.2.3"
+    "@oclif/plugin-help": "^2.2.3",
+    "axios": "^0.19.2",
+    "chalk": "^4.0.0",
+    "cheerio": "^1.0.0-rc.3",
+    "clear": "^0.1.0",
+    "cli-progress": "^3.7.0",
+    "cloudinary": "^1.21.0",
+    "configstore": "^5.0.1",
+    "html-minifier": "^4.0.0",
+    "inquirer": "^7.1.0",
+    "lodash": "^4.17.15",
+    "lodash-id": "^0.14.0",
+    "lowdb": "^1.0.0",
+    "mjml": "^4.6.2",
+    "ora": "^4.0.3"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.2",

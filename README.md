@@ -28,26 +28,8 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`pochta hello`](#pochta-hello)
 * [`pochta help [COMMAND]`](#pochta-help-command)
-
-## `pochta hello`
-
-Describe the command here
-
-```
-USAGE
-  $ pochta hello
-
-OPTIONS
-  -n, --name=name  name to print
-
-DESCRIPTION
-  ...
-  Extra documentation goes here
-```
-
-_See code: [src/commands/hello.js](https://github.com/sleekuser/pochta/blob/v1.0.1/src/commands/hello.js)_
+* [`pochta send`](#pochta-send)
 
 ## `pochta help [COMMAND]`
 
@@ -65,4 +47,19 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3/src/commands/help.ts)_
+
+## `pochta send`
+
+setup hosting environments and send mjml/html test emails
+
+```
+USAGE
+  $ pochta send
+
+DESCRIPTION
+  ...
+  Extra documentation goes here
+```
+
+_See code: [src/commands/send.js](https://github.com/sleekuser/pochta/blob/v1.0.1/src/commands/send.js)_
 <!-- commandsstop -->
