@@ -15,11 +15,11 @@ Test emails simplified
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g pochta
+$ npm install -g pochta-mjml
 $ pochta COMMAND
 running command...
 $ pochta (-v|--version|version)
-pochta/1.0.1 darwin-x64 node-v13.12.0
+pochta-mjml/1.0.1 darwin-x64 node-v13.12.0
 $ pochta --help [COMMAND]
 USAGE
   $ pochta COMMAND

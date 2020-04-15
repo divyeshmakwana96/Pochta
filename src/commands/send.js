@@ -41,7 +41,7 @@ class SendCommand extends Command {
     }
 
     // Rendering
-    const baseDir = './email'
+    const baseDir = './'
 
     // Render HTML
     let html = await finder.findFilesInDirectory(baseDir)
