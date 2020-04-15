@@ -19,7 +19,7 @@ $ npm install -g pochta-mjml
 $ pochta COMMAND
 running command...
 $ pochta (-v|--version|version)
-pochta-mjml/1.0.1 darwin-x64 node-v13.12.0
+pochta-mjml/1.0.2 darwin-x64 node-v13.12.0
 $ pochta --help [COMMAND]
 USAGE
   $ pochta COMMAND
@@ -57,5 +57,5 @@ USAGE
   $ pochta send
 ```
 
-_See code: [src/commands/send.js](https://github.com/sleekuser/pochta/blob/v1.0.1/src/commands/send.js)_
+_See code: [src/commands/send.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/send.js)_
 <!-- commandsstop -->
