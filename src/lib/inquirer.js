@@ -80,11 +80,11 @@ module.exports = {
         }
       },
       // *
-      // Image hosting provider
+      // Image hosts provider
       {
-        name: 'hosting',
+        name: 'host',
         type: 'list',
-        message: 'Preferred image hosting provider:',
+        message: 'Preferred image hosts provider:',
         choices: ['Cloudinary']
       },
       {

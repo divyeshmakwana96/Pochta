@@ -19,7 +19,7 @@ $ npm install -g pochta-mjml
 $ pochta COMMAND
 running command...
 $ pochta (-v|--version|version)
-pochta-mjml/1.0.2 darwin-x64 node-v13.12.0
+pochta-mjml/1.0.2 darwin-x64 node-v14.0.0
 $ pochta --help [COMMAND]
 USAGE
   $ pochta COMMAND
@@ -28,8 +28,28 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`pochta contacts`](#pochta-contacts)
 * [`pochta help [COMMAND]`](#pochta-help-command)
+* [`pochta hosts`](#pochta-hosts)
 * [`pochta send`](#pochta-send)
+
+## `pochta contacts`
+
+Describe the command here
+
+```
+USAGE
+  $ pochta contacts
+
+OPTIONS
+  -n, --name=name  name to print
+
+DESCRIPTION
+  ...
+  Extra documentation goes here
+```
+
+_See code: [src/commands/contacts.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/contacts.js)_
 
 ## `pochta help [COMMAND]`
 
@@ -47,6 +67,24 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3/src/commands/help.ts)_
+
+## `pochta hosts`
+
+Describe the command here
+
+```
+USAGE
+  $ pochta hosts
+
+OPTIONS
+  -n, --name=name  name to print
+
+DESCRIPTION
+  ...
+  Extra documentation goes here
+```
+
+_See code: [src/commands/host-controller.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/hosts.js)_
 
 ## `pochta send`
 
