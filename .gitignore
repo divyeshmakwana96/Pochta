@@ -128,3 +128,6 @@ optimized/
 /tmp
 /yarn.lock
 node_modules
+
+/*.html
+/images

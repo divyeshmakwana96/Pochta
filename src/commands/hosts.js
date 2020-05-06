@@ -22,14 +22,42 @@ class HostsCommand extends Command {
     if (action === 'list') {
       let list = controller.getMapped()
       if (_.isEmpty(list)) {
+        // list is empty
         console.log(chalk.gray('List empty'))
       } else {
-        let choices = _.map(list, (host) => { return host.title })
-        let profile = await inquirer.askHostProfileSelection(choices)
-        let host = _.find(list, (choice) => { return choice.title === profile.host }).host
 
-        let res = await controller.test(host)
-        console.log(res)
+        // ask for profile selection
+        let choice = await inquirer.askHostProfileSelection(list)
+        let option = await inquirer.aksHostProfileOptions(choice.profile.title)
+
+        switch (option.value) {
+          case 'view':
+            console.log(choice.profile.host)
+            break
+          case 'edit':
+            let type = HostType.get(choice.profile.host.type)
+            let host = await inquirer.askSetupQuestions(type, choice.profile.host)
+
+            // add back default keys
+            host = Object.assign({
+              id: choice.profile.host.id,
+              type: choice.profile.host.type
+            }, host)
+
+            controller.update(host)
+            ora('saving..').start().succeed('Updated successfully!!')
+            break
+          case 'test':
+            await controller.test(choice.profile.host)
+            break
+          case 'delete':
+            const confirmation = await inquirer.askRemoveConfirmation(choice.profile.title)
+            if (confirmation.delete) {
+              controller.delete(choice.profile.host)
+              ora('deleting..').start().succeed('Deleted successfully!!')
+            }
+            break
+        }
       }
 
     /*
@@ -39,21 +67,7 @@ class HostsCommand extends Command {
 
       // ask which host
       let type = await inquirer.askHostTypeSelection()
-
-      let host
-      if (type) {
-        switch (type) {
-          case HostType.S3:
-            host = await inquirer.askS3SetupQuestions()
-            break
-          case HostType.Cloudinary:
-            host = await inquirer.askCloudinarySetupQuestions()
-            break
-          case HostType.ImageKit:
-            host = await inquirer.askImageKitSetupQuestions()
-            break
-        }
-      }
+      let host = await inquirer.askSetupQuestions(type)
 
       if (host) {
         host = Object.assign({
@@ -64,15 +78,11 @@ class HostsCommand extends Command {
         // prompt for testing connection
         const confirmation = await inquirer.askConnectionTest()
         if (confirmation.test) {
-          const spinner = ora('testing...').start()
           try {
             await controller.test(host)
-            spinner.succeed('Connection successful!!')
             controller.add(host)
-          } catch (e) {
-            console.log(e)
-            spinner.fail('Connection failed!! Reason: ' + e)
-          }
+            ora('saving..').start().succeed('Added successfully!!')
+          } catch (e) { }
         }
       } else {
         throw new Error(`Unknown host type: ${ answers.type }`)

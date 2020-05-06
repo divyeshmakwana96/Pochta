@@ -18,6 +18,7 @@ const HostController = {
   get: () => {
     return configs.get('hosts')
   },
+
   getMapped: () => {
     let hosts = configs.get('hosts')
     return _.map(hosts, (host) => {
@@ -26,42 +27,64 @@ const HostController = {
         title += ' (' + host.label + ')'
       }
       return {
-        title: title,
-        host: host
+        name: title,
+        value: { title, host }
       }
     })
   },
+
   add: (host) => {
     let hosts = configs.get('hosts')
     host.id = host.id || uniqueString()
     hosts.push(host)
     configs.set('hosts', hosts)
   },
+
   update: (host) => {
     let hosts = configs.get('hosts')
     let index = _.findIndex(hosts, { id: host.id })
     hosts.splice(index, 1, host)
     configs.set('hosts', hosts)
   },
+
   delete: (host) => {
     let hosts = configs.get('hosts')
     let index = _.findIndex(hosts, { id: host.id })
     hosts.splice(index, 1)
     configs.set('hosts', hosts)
   },
-  test: (host) => {
-    let type = HostType.get(host.type)
-    switch (type) {
-      case HostType.S3:
-        return awsController.test(host)
-      case HostType.Cloudinary:
-        return cloudinaryController.test(host)
-        break
-      case HostType.ImageKit:
-        return imageKitController.test(host)
-        break
-    }
-    return Promise.reject('Invalid host type')
+
+  test: async (host) => {
+    return new Promise((resolve, reject) => {
+      const spinner = ora('testing...').start()
+
+      function handleResponse(response) {
+        spinner.succeed('Connection successful!!')
+        resolve(response)
+      }
+
+      let type = HostType.get(host.type)
+      if (!type) {
+        reject(new Error('Invalid host type'))
+      }
+
+      try {
+        switch (type) {
+          case HostType.S3:
+            awsController.test(host).then(res => handleResponse(res))
+            break
+          case HostType.Cloudinary:
+            cloudinaryController.test(host).then(res => handleResponse(res))
+            break
+          case HostType.ImageKit:
+            imageKitController.test(host).then(res => handleResponse(res))
+            break
+        }
+      } catch (e) {
+        spinner.fail('Connection failed!! Reason: ' + e)
+        reject(e)
+      }
+    })
   }
 }
 

@@ -28,7 +28,8 @@
     "lowdb": "^1.0.0",
     "mjml": "^4.6.2",
     "ora": "^4.0.3",
-    "unique-string": "^2.0.0"
+    "unique-string": "^2.0.0",
+    "webshot-node": "^0.18.2"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.2",

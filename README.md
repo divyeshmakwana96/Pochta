@@ -30,8 +30,9 @@ USAGE
 <!-- commands -->
 * [`pochta contacts`](#pochta-contacts)
 * [`pochta help [COMMAND]`](#pochta-help-command)
-* [`pochta hosts`](#pochta-hosts)
+* [`pochta hosts [ACTION]`](#pochta-hosts-action)
 * [`pochta send`](#pochta-send)
+* [`pochta webshot`](#pochta-webshot)
 
 ## `pochta contacts`
 
@@ -68,23 +69,20 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3/src/commands/help.ts)_
 
-## `pochta hosts`
+## `pochta hosts [ACTION]`
 
 Describe the command here
 
 ```
 USAGE
-  $ pochta hosts
-
-OPTIONS
-  -n, --name=name  name to print
+  $ pochta hosts [ACTION]
 
 DESCRIPTION
   ...
   Extra documentation goes here
 ```
 
-_See code: [src/commands/host-controller.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/hosts.js)_
+_See code: [src/commands/hosts.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/hosts.js)_
 
 ## `pochta send`
 
@@ -96,4 +94,22 @@ USAGE
 ```
 
 _See code: [src/commands/send.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/send.js)_
+
+## `pochta webshot`
+
+Describe the command here
+
+```
+USAGE
+  $ pochta webshot
+
+OPTIONS
+  -n, --name=name  name to print
+
+DESCRIPTION
+  ...
+  Extra documentation goes here
+```
+
+_See code: [src/commands/webshot.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/webshot.js)_
 <!-- commandsstop -->
