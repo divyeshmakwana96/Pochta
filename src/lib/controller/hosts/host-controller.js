@@ -1,27 +1,26 @@
-const configstore = require('configstore')
 const packageJson = require('../../../../package.json')
-const configs = new configstore(packageJson.name + '-hosts', { hosts: [] })
-const uniqueString = require('unique-string')
+const collectionName = 'hosts'
 
-const ora = require('ora')
-const chalk = require('chalk')
+const configstore = require('configstore')
+const configs = new configstore(packageJson.name + '-' + collectionName, { hosts: [] })
+
+const uniqueString = require('unique-string')
 const _ = require('lodash')
 
 const HostType = require('../../enums').HostType
 
-const inquirer = require('../../inquirer/hosts')
 const awsController = require('./services/aws-controller')
 const cloudinaryController = require('./services/cloudinary-controller')
 const imageKitController = require('./services/imagekit-controller')
 
 const HostController = {
   get: () => {
-    return configs.get('hosts')
+    return configs.get(collectionName)
   },
 
   getMapped: () => {
-    let hosts = configs.get('hosts')
-    return _.map(hosts, (host) => {
+    let hosts = configs.get(collectionName)
+    let mapped = _.map(hosts, (host) => {
       let title = HostType.get(host.type).key
       if (host.label.length > 0) {
         title += ' (' + host.label + ')'
@@ -31,60 +30,45 @@ const HostController = {
         value: { title, host }
       }
     })
+
+    return _.sortBy(mapped, 'name')
   },
 
   add: (host) => {
-    let hosts = configs.get('hosts')
+    let hosts = configs.get(collectionName)
     host.id = host.id || uniqueString()
     hosts.push(host)
-    configs.set('hosts', hosts)
+    configs.set(collectionName, hosts)
   },
 
   update: (host) => {
-    let hosts = configs.get('hosts')
+    let hosts = configs.get(collectionName)
     let index = _.findIndex(hosts, { id: host.id })
     hosts.splice(index, 1, host)
-    configs.set('hosts', hosts)
+    configs.set(collectionName, hosts)
   },
 
   delete: (host) => {
-    let hosts = configs.get('hosts')
+    let hosts = configs.get(collectionName)
     let index = _.findIndex(hosts, { id: host.id })
     hosts.splice(index, 1)
-    configs.set('hosts', hosts)
+    configs.set(collectionName, hosts)
   },
 
-  test: async (host) => {
-    return new Promise((resolve, reject) => {
-      const spinner = ora('testing...').start()
+  test: (host) => {
+    let type = HostType.get(host.type)
+    if (!type) {
+      throw new Error('Invalid host type')
+    }
 
-      function handleResponse(response) {
-        spinner.succeed('Connection successful!!')
-        resolve(response)
-      }
-
-      let type = HostType.get(host.type)
-      if (!type) {
-        reject(new Error('Invalid host type'))
-      }
-
-      try {
-        switch (type) {
-          case HostType.S3:
-            awsController.test(host).then(res => handleResponse(res))
-            break
-          case HostType.Cloudinary:
-            cloudinaryController.test(host).then(res => handleResponse(res))
-            break
-          case HostType.ImageKit:
-            imageKitController.test(host).then(res => handleResponse(res))
-            break
-        }
-      } catch (e) {
-        spinner.fail('Connection failed!! Reason: ' + e)
-        reject(e)
-      }
-    })
+    switch (type) {
+      case HostType.S3:
+        return awsController.test(host)
+      case HostType.Cloudinary:
+        return cloudinaryController.test(host)
+      case HostType.ImageKit:
+        return imageKitController.test(host)
+    }
   }
 }
 

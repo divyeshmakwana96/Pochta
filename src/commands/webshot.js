@@ -1,6 +1,5 @@
 const {Command, flags} = require('@oclif/command')
-const webshot = require('webshot-node')
-const fs = require('fs')
+const puppeteer = require('puppeteer-core')
 
 class WebshotCommand extends Command {
   async run() {
@@ -8,9 +7,15 @@ class WebshotCommand extends Command {
     const name = flags.name || 'world'
     this.log(`hello ${name} from /Users/admin/Developer/JS/pochta/src/commands/webshot.js`)
 
-    webshot('<html><body>Hello World</body></html>', 'hello_world.png', {siteType:'html'}, function(err) {
-      // screenshot now saved to hello_world.png
+    const browser = await puppeteer.launch({
+      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
     })
+    const page = await browser.newPage()
+    await page.goto('file:///Users/admin/Developer/Emails/005895-virtual-seminar-rep-to-hcp-email/005895-virtual-seminar-rep-to-hcp-email.html', {
+      waitUntil: 'networkidle2', headless: true
+    })
+    await page.screenshot({path: 'hn.png', fullPage: true})
+    await browser.close()
   }
 }
 

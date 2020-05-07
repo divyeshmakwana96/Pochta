@@ -6,35 +6,37 @@ const _ = require('lodash')
 
 const Inquirer = {
 
-  askHostTypeSelection: async () => {
+  askHostTypeSelection: () => {
     const question = [
       {
         name: 'type',
         type: 'list',
         message: 'Which image hosting provider you would like to add?',
         choices: _.map(HostType.enums, (enm) => {
-          return enm.key
+          return {
+            name: enm.key,
+            value: enm
+          }
         })
       }
     ]
 
-    let answers = await inquirer.prompt(question)
-    return HostType.get(answers.type)
+    return inquirer.prompt(question)
   },
 
-  askHostProfileSelection: (profiles) => {
+  askHostSelection: (profiles) => {
     const question = [
       {
         name: 'profile',
         type: 'list',
-        message: 'Which host you would like to view?',
+        message: 'Which host would you like to view?',
         choices: profiles
       }
     ]
     return inquirer.prompt(question)
   },
 
-  askConnectionTest: () => {
+  askHostConnectionTest: () => {
     const question = [
       {
         name: 'test',
@@ -45,31 +47,30 @@ const Inquirer = {
     return inquirer.prompt(question)
   },
 
-  askRemoveConfirmation: (title) => {
+  askHostRemoveConfirmation: (title) => {
     const question = [
       {
         name: 'delete',
         type: 'confirm',
-        message: `Are you sure you want to delete ${chalk.cyan(title)}?`,
-        default: false
+        message: `Are you sure you want to delete ${chalk.cyan(title)}?`
       }
     ]
     return inquirer.prompt(question)
   },
 
-  aksHostProfileOptions: (label) => {
+  askHostOptions: (title) => {
     const question = [
       {
         name: 'value',
         type: 'list',
-        message: `What would you like to do with ${chalk.cyan(label)}?`,
+        message: `What would you like to do with ${chalk.cyan(title)}?`,
         choices: ['view', 'edit', 'delete', 'test', new inquirer.Separator(), 'cancel']
       }
     ]
     return inquirer.prompt(question)
   },
 
-  askSetupQuestions: (type, host) => {
+  askHostSetupQuestions: (type, host) => {
     if (type) {
       switch (type) {
         case HostType.S3:
@@ -88,7 +89,7 @@ const Inquirer = {
       {
         name: 'label',
         type: 'input',
-        message: `Enter a label you want to set ${chalk.gray('(optional)')}:`,
+        message: `Enter a label ${chalk.gray('(optional)')}:`,
         default: host && host.label || null
       },
       {
@@ -119,7 +120,7 @@ const Inquirer = {
       {
         name: 'label',
         type: 'input',
-        message: `Enter a label you want to set ${chalk.gray('(optional)')}:`,
+        message: `Enter a label ${chalk.gray('(optional)')}:`,
         default: host && host.label || null
       },
       {
@@ -144,20 +145,20 @@ const Inquirer = {
     return inquirer.prompt(questions)
   },
 
-  // Cloudinary
+  // ImageKit
   askImageKitSetupQuestions: (host) => {
     const questions = [
       {
         name: 'label',
         type: 'input',
-        message: `Enter a label you want to set ${chalk.gray('(optional)')}:`,
-        default: host && host.apiSecret || null
+        message: `Enter a label ${chalk.gray('(optional)')}:`,
+        default: host && host.label || null
       },
       {
         name: 'privateKey',
         type: 'input',
         message: 'Enter the private key:',
-        default: host && host.apiSecret || null
+        default: host && host.privateKey || null
       }
     ]
     return inquirer.prompt(questions)

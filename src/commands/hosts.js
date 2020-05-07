@@ -23,12 +23,13 @@ class HostsCommand extends Command {
       let list = controller.getMapped()
       if (_.isEmpty(list)) {
         // list is empty
-        console.log(chalk.gray('List empty'))
+        console.log(chalk.gray('No hosts found'))
+
       } else {
 
         // ask for profile selection
-        let choice = await inquirer.askHostProfileSelection(list)
-        let option = await inquirer.aksHostProfileOptions(choice.profile.title)
+        let choice = await inquirer.askHostSelection(list)
+        let option = await inquirer.askHostOptions(choice.profile.title)
 
         switch (option.value) {
           case 'view':
@@ -36,7 +37,7 @@ class HostsCommand extends Command {
             break
           case 'edit':
             let type = HostType.get(choice.profile.host.type)
-            let host = await inquirer.askSetupQuestions(type, choice.profile.host)
+            let host = await inquirer.askHostSetupQuestions(type, choice.profile.host)
 
             // add back default keys
             host = Object.assign({
@@ -45,16 +46,16 @@ class HostsCommand extends Command {
             }, host)
 
             controller.update(host)
-            ora('saving..').start().succeed('Updated successfully!!')
+            ora('updating..').start().succeed('updated')
             break
           case 'test':
-            await controller.test(choice.profile.host)
+            await ora.promise(controller.test(choice.profile.host), 'testing..')
             break
           case 'delete':
-            const confirmation = await inquirer.askRemoveConfirmation(choice.profile.title)
+            const confirmation = await inquirer.askHostRemoveConfirmation(choice.profile.title)
             if (confirmation.delete) {
               controller.delete(choice.profile.host)
-              ora('deleting..').start().succeed('Deleted successfully!!')
+              ora('deleting..').start().succeed('deleted')
             }
             break
         }
@@ -66,37 +67,39 @@ class HostsCommand extends Command {
     } else if (action === 'new') {
 
       // ask which host
-      let type = await inquirer.askHostTypeSelection()
-      let host = await inquirer.askSetupQuestions(type)
+      let choice = await inquirer.askHostTypeSelection()
+      let host = await inquirer.askHostSetupQuestions(choice.type)
 
       if (host) {
         host = Object.assign({
           id: uniqueString(),
-          type: type.key
+          type: choice.type.key
         }, host)
 
+        ora('saving..').start().succeed('host added')
+        controller.add(host)
+
         // prompt for testing connection
-        const confirmation = await inquirer.askConnectionTest()
+        const confirmation = await inquirer.askHostConnectionTest()
         if (confirmation.test) {
-          try {
-            await controller.test(host)
-            controller.add(host)
-            ora('saving..').start().succeed('Added successfully!!')
-          } catch (e) { }
+          await ora.promise(controller.test(host), 'testing..')
+
         }
       } else {
-        throw new Error(`Unknown host type: ${ answers.type }`)
+        throw new Error(`Unknown host type: ${ choice.type.key }`)
       }
     }
   }
 }
 
+HostsCommand.args = [
+  { name: 'action' }
+]
+
 HostsCommand.description = `Describe the command here
 ...
 Extra documentation goes here
 `
-HostsCommand.args = [
-  { name: 'action' }
-]
+
 
 module.exports = HostsCommand

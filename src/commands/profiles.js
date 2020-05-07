@@ -7,22 +7,22 @@ const ora = require('ora')
 const uniqueString = require('unique-string')
 const _ = require('lodash')
 
-const controller = require('../lib/controller/contacts/contact-controller')
+const controller = require('../lib/controller/profiles/profile-controller')
 const inquirer = require('../lib/inquirer/contacts')
 
-class ContactsCommand extends Command {
+class ProfilesCommand extends Command {
   async run() {
     // clear all
     clear()
 
-    const {args} = this.parse(ContactsCommand)
+    const {args} = this.parse(ProfilesCommand)
     const action = args.action || 'list'
 
     if (action === 'list') {
       let list = controller.getMapped()
       if (_.isEmpty(list)) {
         // list is empty
-        console.log(chalk.gray('No contacts found'))
+        console.log(chalk.gray('No profiles found'))
 
       } else {
 
@@ -32,14 +32,14 @@ class ContactsCommand extends Command {
 
         switch (option.value) {
           case 'view':
-            console.log(choice.profile.contact)
+            console.log(choice.profile.sender)
             break
           case 'edit':
-            let profile = await inquirer.askContactSetupQuestions(choice.profile.contact)
+            let profile = await inquirer.askContactSetupQuestions(choice.profile.sender)
 
             // add back default keys
             profile = Object.assign({
-              id: choice.profile.contact.id
+              id: choice.profile.sender.id
             }, profile)
 
             controller.update(profile)
@@ -48,7 +48,7 @@ class ContactsCommand extends Command {
           case 'delete':
             const confirmation = await inquirer.askContactRemoveConfirmation(choice.profile.title)
             if (confirmation.delete) {
-              controller.delete(choice.profile.contact)
+              controller.delete(choice.profile.sender)
               ora('deleting..').start().succeed('deleted')
             }
             break
@@ -69,19 +69,19 @@ class ContactsCommand extends Command {
         }, sender)
         controller.add(sender)
 
-        ora('saving..').start().succeed('contact added')
+        ora('saving..').start().succeed('profile added')
       }
     }
   }
 }
 
-ContactsCommand.args = [
+ProfilesCommand.args = [
   { name: 'action' }
 ]
 
-ContactsCommand.description = `Describe the command here
+ProfilesCommand.description = `Describe the command here
 ...
 Extra documentation goes here
 `
 
-module.exports = ContactsCommand
+module.exports = ProfilesCommand

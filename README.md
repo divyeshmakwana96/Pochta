@@ -28,19 +28,36 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`pochta contacts`](#pochta-contacts)
+* [`pochta contacts [ACTION]`](#pochta-contacts-action)
+* [`pochta esp`](#pochta-esp)
 * [`pochta help [COMMAND]`](#pochta-help-command)
 * [`pochta hosts [ACTION]`](#pochta-hosts-action)
+* [`pochta profiles [ACTION]`](#pochta-profiles-action)
 * [`pochta send`](#pochta-send)
 * [`pochta webshot`](#pochta-webshot)
 
-## `pochta contacts`
+## `pochta contacts [ACTION]`
 
 Describe the command here
 
 ```
 USAGE
-  $ pochta contacts
+  $ pochta contacts [ACTION]
+
+DESCRIPTION
+  ...
+  Extra documentation goes here
+```
+
+_See code: [src/commands/contacts.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/contacts.js)_
+
+## `pochta esp`
+
+Describe the command here
+
+```
+USAGE
+  $ pochta esp
 
 OPTIONS
   -n, --name=name  name to print
@@ -50,7 +67,7 @@ DESCRIPTION
   Extra documentation goes here
 ```
 
-_See code: [src/commands/contacts.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/contacts.js)_
+_See code: [src/commands/esp.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/esp.js)_
 
 ## `pochta help [COMMAND]`
 
@@ -83,6 +100,21 @@ DESCRIPTION
 ```
 
 _See code: [src/commands/hosts.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/hosts.js)_
+
+## `pochta profiles [ACTION]`
+
+Describe the command here
+
+```
+USAGE
+  $ pochta profiles [ACTION]
+
+DESCRIPTION
+  ...
+  Extra documentation goes here
+```
+
+_See code: [src/commands/profiles.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/profiles.js)_
 
 ## `pochta send`
 
