@@ -185,9 +185,7 @@ const Inquirer = {
         name: 'auth.oauth2type',
         type: 'list',
         message: 'Select OAuth2 method:',
-        choices: _.map(Enums.OAuth2Type.enums, (enm) => {
-          return enm.key
-        }),
+        choices: _.map(Enums.OAuth2Type.enums, (enm) => { return enm.key }),
         when: (answers) => {
           return answers.auth.type === Enums.AuthType.OAuth2.key
         },
