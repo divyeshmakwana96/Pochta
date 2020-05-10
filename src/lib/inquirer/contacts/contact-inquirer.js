@@ -4,7 +4,7 @@ const chalk = require('chalk')
 
 class ContactInquirer extends CrudInquirer {
   constructor() {
-    super('contact', false)
+    super('contact')
   }
 
   askSetupQuestions(contact) {
@@ -16,10 +16,16 @@ class ContactInquirer extends CrudInquirer {
         default: contact && contact.label || null
       },
       {
-        name: 'name',
+        name: 'firstname',
         type: 'input',
-        message: 'Enter the name:',
-        default: contact && contact.name || null
+        message: 'Enter first name:',
+        default: contact && contact.firstname || null
+      },
+      {
+        name: 'lastname',
+        type: 'input',
+        message: 'Enter last name:',
+        default: contact && contact.lastname || null
       },
       {
         name: 'email',

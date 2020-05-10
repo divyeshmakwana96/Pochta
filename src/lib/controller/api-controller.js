@@ -1,4 +1,4 @@
-class APIController {
+class ApiController {
   constructor(object) {
     this.object = object
   }
@@ -8,4 +8,4 @@ class APIController {
   }
 }
 
-module.exports = APIController
+module.exports = ApiController

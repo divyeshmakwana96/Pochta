@@ -3,11 +3,13 @@ const inquirer = require('inquirer')
 const chalk = require('chalk')
 const _ = require('lodash')
 
-const HostType = require('../../enums').HostType
+const Enums = require('../../enums')
+const HostType = Enums.HostType
+const OptionType = Enums.OptionType
 
 class HostInquirer extends CrudInquirer {
   constructor() {
-    super('host', true)
+    super('host', [OptionType.View, OptionType.Edit, OptionType.Delete, OptionType.Test])
   }
 
   // selection type

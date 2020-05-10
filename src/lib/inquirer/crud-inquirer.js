@@ -6,9 +6,9 @@ const OptionType = require('../enums').OptionType
 
 class CrudInquirer {
 
-  constructor(entityName , hasConnectionTestOption) {
+  constructor(entityName , objectOptions) {
     this.entityName = entityName
-    this.hasConnectionTestOption = hasConnectionTestOption
+    this.objectOptions = objectOptions || [OptionType.View, OptionType.Edit, OptionType.Delete]
   }
 
   askSelection(objects) {
@@ -28,22 +28,23 @@ class CrudInquirer {
   }
 
   askOptions(title) {
-    let options = [OptionType.View, OptionType.Edit, OptionType.Delete, OptionType.Cancel]
-    if (this.hasConnectionTestOption) {
-      options.splice(3, 0, OptionType.Test)
-    }
+    const options = _.map(this.objectOptions, (enm) => {
+      return {
+        name: enm.key,
+        value: enm
+      }
+    })
+
+    options.push(new inquirer.Separator())
+    options.push('Cancel')
+
 
     const question = [
       {
         name: 'option',
         type: 'list',
         message: `What would you like to do with ${chalk.cyan(title)}?`,
-        choices: _.map(options, (enm) => {
-          return {
-            name: enm.key,
-            value: enm
-          }
-        })
+        choices: options
       }
     ]
     return inquirer.prompt(question)

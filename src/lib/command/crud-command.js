@@ -48,6 +48,10 @@ class CrudCommand extends Command {
             await this.performConnectionTest(choice.profile.object)
             break
 
+          case OptionType.Sync:
+            await this.performConnectionSync(choice.profile.object)
+            break
+
           case OptionType.Delete:
             const shouldDelete = await this.inquirer.askDeleteConfirm(choice.profile.title)
             if (shouldDelete.confirm) {
@@ -71,12 +75,23 @@ class CrudCommand extends Command {
         this.controller.add(profile)
         ora('saving..').start().succeed(`${this.inquirer && this.inquirer.entityName || 'object'} added`)
       }
+    } else {
+      this.handleAction(action)
     }
   }
 
-  async performConnectionTest(object) {
-    console.log(`Should handled connection test for: ${object}`)
+  performConnectionTest(object) {
+    throw new Error(`Should handled connection test for: ${object}`)
   }
+
+  performConnectionSync(object) {
+    throw new Error(`Should handled connection sync for: ${object}`)
+  }
+
+  handleAction(action) {
+    throw new Error(`Invalid argument '${action}'. Run help command to see available options`)
+  }
+
 }
 
 CrudCommand.args = [
