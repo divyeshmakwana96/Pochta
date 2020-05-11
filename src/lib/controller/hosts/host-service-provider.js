@@ -1,12 +1,12 @@
-const APIController = require('../api-controller')
+const ApiServiceProvider = require('../api-service-provider')
 const ora = require('../../ora')
 const HostType = require('../../enums').HostType
 
-const AWSController = require('./services/aws-controller')
-const CloudinaryController = require('./services/cloudinary-controller')
-const ImageKitController = require('./services/imagekit-controller')
+const AWSController = require('./services/aws-service-provider')
+const CloudinaryController = require('./services/cloudinary-service-provider')
+const ImageKitController = require('./services/imagekit-service-provider')
 
-class ServiceController extends APIController {
+class HostServiceProvider extends ApiServiceProvider {
   test(payload) {
     let type = HostType.get(this.object && this.object.type)
     if (!type) {
@@ -38,4 +38,4 @@ class ServiceController extends APIController {
   }
 }
 
-module.exports = ServiceController
+module.exports = HostServiceProvider

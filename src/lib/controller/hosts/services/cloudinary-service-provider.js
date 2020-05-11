@@ -1,7 +1,7 @@
 const cloudinary = require('cloudinary').v2
-const APIController = require('../../api-controller')
+const ApiServiceProvider = require('../../api-service-provider')
 
-class CloudinaryController extends APIController {
+class CloudinaryServiceProvider extends ApiServiceProvider {
   test(payload) {
     cloudinary.config({
       cloud_name: this.object.cloudName,
@@ -12,4 +12,4 @@ class CloudinaryController extends APIController {
   }
 }
 
-module.exports = CloudinaryController
+module.exports = CloudinaryServiceProvider

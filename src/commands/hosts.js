@@ -1,6 +1,6 @@
 const CrudCommand = require('../lib/command/crud-command')
 const HostController = require('../lib/controller/hosts/host-controller')
-const ServiceController = require('../lib/controller/hosts/service-controller')
+const HostServiceProvider = require('../lib/controller/hosts/host-service-provider')
 const HostInquirer = require('../lib/controller/hosts/host-inquirer')
 
 const OptionType = require('../lib/enums').OptionType
@@ -16,7 +16,7 @@ class HostsCommand extends CrudCommand {
   async handleOption(option, host) {
     switch (option) {
       case OptionType.Test: {
-        let service = new ServiceController(host)
+        let service = new HostServiceProvider(host)
         await service.test()
         break
       }

@@ -1,6 +1,6 @@
 const CrudCommand = require('../lib/command/crud-command')
 const EspController = require('../lib/controller/esp/esp-controller')
-const ServiceController = require('../lib/controller/esp/service-controller')
+const EspServiceProvider = require('../lib/controller/esp/esp-service-provider')
 const EspInquirer = require('../lib/controller/esp/esp-inquirer')
 
 const OptionType = require('../lib/enums').OptionType
@@ -16,7 +16,7 @@ class EspCommand extends CrudCommand {
   async handleOption(option, esp) {
     switch (option) {
       case OptionType.Test: {
-        let service = new ServiceController(esp)
+        let service = new EspServiceProvider(esp)
         await service.test()
         break
       }

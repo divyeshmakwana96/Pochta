@@ -1,4 +1,4 @@
-const APIController = require('../api-controller')
+const APIController = require('../api-service-provider')
 const ora = require('../../ora')
 const ConnectionType = require('../../enums').ConnectionType
 

@@ -1,4 +1,4 @@
-class ApiController {
+class ApiServiceProvider {
   constructor(object) {
     this.object = object
   }
@@ -8,4 +8,4 @@ class ApiController {
   }
 }
 
-module.exports = ApiController
+module.exports = ApiServiceProvider

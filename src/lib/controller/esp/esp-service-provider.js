@@ -1,4 +1,4 @@
-const APIController = require('../api-controller')
+const ApiServiceProvider = require('../api-service-provider')
 const ora = require('../../ora')
 const EspType = require('../../enums').EspType
 
@@ -8,7 +8,7 @@ const SMTPController = require('./services/smtp-controller')
 const ProfileController = require('../../controller/profiles/profile-controller')
 const ProfileInquirer = require('../profiles/profile-inquirer')
 
-class ServiceController extends APIController {
+class EspServiceProvider extends ApiServiceProvider {
   async test(payload) {
     let type = EspType.get(this.object && this.object.type)
     if (!type) {
@@ -47,4 +47,4 @@ class ServiceController extends APIController {
   }
 }
 
-module.exports = ServiceController
+module.exports = EspServiceProvider

@@ -2,7 +2,7 @@ const axios = require('axios')
 const uniqueString = require('unique-string')
 const _ = require('lodash')
 
-const APIController = require('../../api-controller')
+const APIController = require('../../api-service-provider')
 
 const ProfileController = require('../../profiles/profile-controller')
 const ContactController = require('../../contacts/contact-controller')

@@ -1,11 +1,11 @@
 const axios = require('axios')
 const _ = require('lodash')
 
-const EspServiceController = require('./esp-service-controller')
+const BaseEspServiceProvider = require('./base-esp-service-provider')
 
 const BASE_URL = 'https://api.mailjet.com/v3.1'
 
-class MailJetController extends EspServiceController {
+class MailJetController extends BaseEspServiceProvider {
   test(contact) {
 
     if (!contact) {

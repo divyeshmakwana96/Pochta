@@ -1,6 +1,6 @@
-const APIController = require('../../api-controller')
+const APIController = require('../../api-service-provider')
 
-class EspServiceController extends APIController {
+class BaseEspServiceProvider extends APIController {
 
   constructor(object) {
     super(object)
@@ -20,4 +20,4 @@ class EspServiceController extends APIController {
   }
 }
 
-module.exports = EspServiceController
+module.exports = BaseEspServiceProvider
