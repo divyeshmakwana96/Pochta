@@ -1,9 +1,9 @@
-const ora = require('ora')
-
 const CrudCommand = require('../lib/command/crud-command')
 const ConnectionController = require('../lib/controller/connections/connection-controller')
 const ServiceController = require('../lib/controller/connections/service-controller')
-const ConnectionInquirer = require('../lib/inquirer/connections/connection-inquirer')
+const ConnectionInquirer = require('../lib/controller/connections/connection-inquirer')
+
+const OptionType = require('../lib/enums').OptionType
 
 class ConnectionsCommand extends CrudCommand {
   async run() {
@@ -13,20 +13,19 @@ class ConnectionsCommand extends CrudCommand {
     await super.run()
   }
 
-  async performConnectionTest(conn) {
-    let service = new ServiceController(conn)
-    await ora.promise(service.test(), 'testing..')
-  }
-
-  async performConnectionSync(conn) {
-    let service = new ServiceController(conn)
-    try {
-      await service.sync()
-    } catch (e) {
-      console.log(e)
+  async handleOption(option, conn) {
+    switch (option) {
+      case OptionType.Test: {
+        let service = new ServiceController(conn)
+        await service.test()
+        break
+      }
+      case OptionType.Sync: {
+        let service = new ServiceController(conn)
+        await service.sync()
+        break
+      }
     }
-
-    // await ora.promise(service.sync(), 'testing..')
   }
 }
 

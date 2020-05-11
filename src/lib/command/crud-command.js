@@ -4,13 +4,9 @@ const clear = require('clear')
 const chalk = require('chalk')
 const ora = require('ora')
 
-const uniqueString = require('unique-string')
 const _ = require('lodash')
 
 const OptionType = require('../../lib/enums').OptionType
-
-// const ContactController = require('../lib/controller/contacts/contact-controller')
-// const ContactInquirer = require('../lib/inquirer/contacts/contact-inquirer')
 
 class CrudCommand extends Command {
   async run() {
@@ -24,7 +20,7 @@ class CrudCommand extends Command {
       let list = this.controller.getMapped()
       if (_.isEmpty(list)) {
         // list is empty
-        console.log(chalk.gray(`No ${this.inquirer && this.inquirer.entityName || 'object'} found`))
+        console.log(chalk.gray(`No ${this.inquirer && this.inquirer.entityName || 'object'}s found`))
 
       } else {
 
@@ -40,16 +36,8 @@ class CrudCommand extends Command {
           case OptionType.Edit:
             let profile = await this.inquirer.askSetupQuestions(choice.profile.object)
             profile.id = choice.profile.object.id
-            this.controller.update(profile)
+            this.controller.put(profile)
             ora('updating..').start().succeed('updated')
-            break
-
-          case OptionType.Test:
-            await this.performConnectionTest(choice.profile.object)
-            break
-
-          case OptionType.Sync:
-            await this.performConnectionSync(choice.profile.object)
             break
 
           case OptionType.Delete:
@@ -59,7 +47,10 @@ class CrudCommand extends Command {
               ora('deleting..').start().succeed('deleted')
             }
             break
+
+          case OptionType.Cancel: break
           default:
+            await this.handleOption(selection.option, choice.profile.object)
             break
         }
       }
@@ -74,18 +65,19 @@ class CrudCommand extends Command {
       if (profile) {
         this.controller.add(profile)
         ora('saving..').start().succeed(`${this.inquirer && this.inquirer.entityName || 'object'} added`)
+
+        let test = await this.inquirer.askConnectionTestConfirm()
+        if (test.confirm) {
+          await this.handleOption(OptionType.Test, profile)
+        }
       }
     } else {
       this.handleAction(action)
     }
   }
 
-  performConnectionTest(object) {
-    throw new Error(`Should handled connection test for: ${object}`)
-  }
-
-  performConnectionSync(object) {
-    throw new Error(`Should handled connection sync for: ${object}`)
+  handleOption(option, object) {
+    throw new Error(`Invalid option '${option}'. Run help command to see available options`)
   }
 
   handleAction(action) {

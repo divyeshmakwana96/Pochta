@@ -48,6 +48,59 @@ class ModelController {
     this.configs.set(this.collectionKey, objects)
   }
 
+  put(object) {
+    let objects = this.configs.get(this.collectionKey)
+
+    let shouldAdd = true
+    if (object && object.id) {
+      let existing = _.find(objects, { id: object.id })
+
+      if (existing) {
+        objects.splice(_.findIndex(objects, { id: object.id }), 1, _.merge(existing, object))
+        shouldAdd = false
+      }
+    }
+
+    if (shouldAdd) {
+      object.id = object.id || uniqueString()
+      objects.push(object)
+    }
+
+    // Replace collection
+    this.configs.set(this.collectionKey, objects)
+  }
+
+  putBatch(collection) {
+    let objects = this.configs.get(this.collectionKey)
+
+    _.each(collection, (object) => {
+      let shouldAdd = true
+      if (object && object.id) {
+        let index = _.findIndex(objects, { id: object.id })
+        if (index !== -1) {
+          objects.splice(index, 1, object)
+          shouldAdd = false
+        }
+      }
+
+      if (shouldAdd) {
+        object.id = object.id || uniqueString()
+        objects.push(object)
+      }
+    })
+
+    // Replace collection
+    this.configs.set(this.collectionKey, objects)
+  }
+
+  replace(collection) {
+    if (collection && Array.isArray(collection)) {
+      this.configs.set(this.collectionKey, collection)
+    } else {
+      throw new Error('Replace object must be an array')
+    }
+  }
+
   delete(object) {
     let objects = this.configs.get(this.collectionKey)
     let index = _.findIndex(objects, { id: object.id })

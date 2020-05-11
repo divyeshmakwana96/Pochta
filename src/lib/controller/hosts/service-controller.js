@@ -1,4 +1,5 @@
 const APIController = require('../api-controller')
+const ora = require('../../ora')
 const HostType = require('../../enums').HostType
 
 const AWSController = require('./services/aws-controller')
@@ -26,7 +27,13 @@ class ServiceController extends APIController {
     }
 
     if (controller) {
-      return controller.test()
+      return ora(controller.test(this.object), 'testing..', 'success!!', function (e) {
+        if (e instanceof Error) {
+          return (e && e.response && e.response.data && e.response.data.ErrorMessage)
+        } else {
+          return e
+        }
+      })
     }
   }
 }

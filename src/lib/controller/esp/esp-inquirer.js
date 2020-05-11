@@ -1,18 +1,27 @@
+const CrudInquirer = require('../crud-inquirer')
 const inquirer = require('inquirer')
-const Enums = require('../enums')
 const chalk = require('chalk')
-
 const _ = require('lodash')
 
-const Inquirer = {
+const Enums = require('../../enums')
+const EspType = Enums.EspType
+const OptionType = Enums.OptionType
+const AuthType = Enums.AuthType
+const OAuth2Type = Enums.OAuth2Type
 
-  askEspTypeSelection: () => {
+class EspInquirer extends CrudInquirer {
+  constructor() {
+    super('esp', [OptionType.View, OptionType.Edit, OptionType.Delete, OptionType.Test])
+  }
+
+  // selection type
+  askEspTypeSelection() {
     const question = [
       {
         name: 'type',
         type: 'list',
         message: 'Which email service provider you would like to add?',
-        choices: _.map(Enums.EspType.enums, (enm) => {
+        choices: _.map(EspType.enums, (enm) => {
           return {
             name: enm.key,
             value: enm
@@ -22,69 +31,41 @@ const Inquirer = {
     ]
 
     return inquirer.prompt(question)
-  },
+  }
 
-  askEspSelection: (profiles) => {
-    const question = [
-      {
-        name: 'profile',
-        type: 'list',
-        message: 'Which esp would you like to view?',
-        choices: profiles
-      }
-    ]
-    return inquirer.prompt(question)
-  },
+  // setup
+  async askSetupQuestions(esp) {
 
-  askEspConnectionTest: () => {
-    const question = [
-      {
-        name: 'test',
-        type: 'confirm',
-        message: 'Would you like to test the connection?'
-      }
-    ]
-    return inquirer.prompt(question)
-  },
+    let type = esp && esp.type && EspType.get(esp.type)
+    if (!type) {
+      let choice = await this.askEspTypeSelection()
+      type = choice.type
+      esp = {type: type.key}
+    }
 
-  askEspRemoveConfirmation: (title) => {
-    const question = [
-      {
-        name: 'delete',
-        type: 'confirm',
-        message: `Are you sure you want to delete ${chalk.cyan(title)}?`
-      }
-    ]
-    return inquirer.prompt(question)
-  },
-
-  askEspOptions: (title) => {
-    const question = [
-      {
-        name: 'value',
-        type: 'list',
-        message: `What would you like to do with ${chalk.cyan(title)}?`,
-        choices: ['view', 'edit', 'delete', 'test', new inquirer.Separator(), 'cancel']
-      }
-    ]
-    return inquirer.prompt(question)
-  },
-
-  askEspSetupQuestions: (type, esp) => {
+    let promise
     if (type) {
       switch (type) {
-        case Enums.EspType.SendGrid:
-          return Inquirer.askSendGridSetupQuestions(esp)
-        case Enums.EspType.MailJet:
-          return Inquirer.askMailJetSetupQuestions(esp)
-        case Enums.EspType.SMTP:
-          return Inquirer.askSmtpSetupQuestions(esp)
+        case EspType.SendGrid:
+          promise = this.askSendGridSetupQuestions(esp)
+          break
+        case EspType.MailJet:
+          promise = this.askMailJetSetupQuestions(esp)
+          break
+        case EspType.SMTP:
+          promise = this.askSmtpSetupQuestions(esp)
+          break
       }
     }
-  },
+
+    // get answers
+    let answers = await promise
+    answers.type = esp.type
+    return answers
+  }
 
   // SendGrid
-  askSendGridSetupQuestions: (esp) => {
+  askSendGridSetupQuestions(esp) {
     const questions = [
       {
         name: 'label',
@@ -106,10 +87,10 @@ const Inquirer = {
       }
     ]
     return inquirer.prompt(questions)
-  },
+  }
 
   // MailJet
-  askMailJetSetupQuestions: (esp) => {
+  askMailJetSetupQuestions(esp) {
     const questions = [
       {
         name: 'label',
@@ -137,10 +118,10 @@ const Inquirer = {
       }
     ]
     return inquirer.prompt(questions)
-  },
+  }
 
   // SMTP
-  askSmtpSetupQuestions: (esp) => {
+  askSmtpSetupQuestions(esp) {
     const questions = [
       {
         name: 'label',
@@ -185,9 +166,11 @@ const Inquirer = {
         name: 'auth.oauth2type',
         type: 'list',
         message: 'Select OAuth2 method:',
-        choices: _.map(Enums.OAuth2Type.enums, (enm) => { return enm.key }),
+        choices: _.map(OAuth2Type.enums, (enm) => {
+          return enm.key
+        }),
         when: (answers) => {
-          return answers.auth.type === Enums.AuthType.OAuth2.key
+          return answers.auth.type === AuthType.OAuth2.key
         },
         default: esp && esp.auth && esp.auth.oauth2type
       },
@@ -195,7 +178,7 @@ const Inquirer = {
         name: 'auth.user',
         type: 'input',
         message: 'Enter username:',
-        default: esp && esp.auth && esp.auth.label
+        default: esp && esp.auth && esp.auth.user
       },
       {
         name: 'auth.pass',
@@ -203,7 +186,7 @@ const Inquirer = {
         message: 'Enter password:',
         default: esp && esp.auth && esp.auth.pass,
         when: (answers) => {
-          return answers.auth.type === Enums.AuthType.Login.key
+          return answers.auth.type === AuthType.Login.key
         }
       },
       {
@@ -212,8 +195,8 @@ const Inquirer = {
         message: 'Enter client id:',
         default: esp && esp.auth && esp.auth.clientId,
         when: (answers) => {
-          return answers.auth.type === Enums.AuthType.OAuth2.key
-            && answers.auth.oauth2type === Enums.OAuth2Type.a3L0.key
+          return answers.auth.type === AuthType.OAuth2.key
+            && answers.auth.oauth2type === OAuth2Type.a3L0.key
         }
       },
       {
@@ -222,8 +205,8 @@ const Inquirer = {
         message: 'Enter client secret:',
         default: esp && esp.auth && esp.auth.clientSecret,
         when: (answers) => {
-          return answers.auth.type === Enums.AuthType.OAuth2.key
-            && answers.auth.oauth2type === Enums.OAuth2Type.a3L0.key
+          return answers.auth.type === AuthType.OAuth2.key
+            && answers.auth.oauth2type === OAuth2Type.a3L0.key
         }
       },
       {
@@ -232,8 +215,8 @@ const Inquirer = {
         message: 'Enter refresh token:',
         default: esp && esp.auth && esp.auth.refreshToken,
         when: (answers) => {
-          return answers.auth.type === Enums.AuthType.OAuth2.key
-            && answers.auth.oauth2type === Enums.OAuth2Type.a3L0.key
+          return answers.auth.type === AuthType.OAuth2.key
+            && answers.auth.oauth2type === OAuth2Type.a3L0.key
         }
       },
       {
@@ -242,8 +225,8 @@ const Inquirer = {
         message: 'Enter client service client:',
         default: esp && esp.auth && esp.auth.serviceClient,
         when: (answers) => {
-          return answers.auth.type === Enums.AuthType.OAuth2.key
-            && answers.auth.oauth2type === Enums.OAuth2Type.a2L0.key
+          return answers.auth.type === AuthType.OAuth2.key
+            && answers.auth.oauth2type === OAuth2Type.a2L0.key
         }
       },
       {
@@ -252,8 +235,8 @@ const Inquirer = {
         message: 'Enter private key:',
         default: esp && esp.auth && esp.auth.privateKey,
         when: (answers) => {
-          return answers.auth.type === Enums.AuthType.OAuth2.key
-            && answers.auth.oauth2type === Enums.OAuth2Type.a2L0.key
+          return answers.auth.type === AuthType.OAuth2.key
+            && answers.auth.oauth2type === OAuth2Type.a2L0.key
         }
       },
       {
@@ -262,7 +245,7 @@ const Inquirer = {
         message: 'Enter access token:',
         default: esp && esp.auth && esp.auth.accessToken,
         when: (answers) => {
-          return answers.auth.type === Enums.AuthType.OAuth2.key
+          return answers.auth.type === AuthType.OAuth2.key
         }
       },
       {
@@ -271,8 +254,8 @@ const Inquirer = {
         message: 'Enter token expiry timestamp:',
         default: esp && esp.auth && esp.auth.accessToken,
         when: (answers) => {
-          return answers.auth.type === Enums.AuthType.OAuth2.key
-            && answers.auth.oauth2type !== Enums.OAuth2Type.AccessToken.key
+          return answers.auth.type === AuthType.OAuth2.key
+            && answers.auth.oauth2type !== OAuth2Type.AccessToken.key
         }
       }
     ]
@@ -280,4 +263,4 @@ const Inquirer = {
   }
 }
 
-module.exports = Inquirer
+module.exports = EspInquirer

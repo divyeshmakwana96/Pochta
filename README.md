@@ -28,25 +28,22 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`pochta connections`](#pochta-connections)
+* [`pochta connections [ACTION]`](#pochta-connections-action)
 * [`pochta contacts [ACTION]`](#pochta-contacts-action)
-* [`pochta esp [ACTION]`](#pochta-esp-action)
+* [`pochta esp`](#pochta-esp)
 * [`pochta help [COMMAND]`](#pochta-help-command)
 * [`pochta hosts [ACTION]`](#pochta-hosts-action)
 * [`pochta profiles [ACTION]`](#pochta-profiles-action)
 * [`pochta send`](#pochta-send)
 * [`pochta webshot`](#pochta-webshot)
 
-## `pochta connections`
+## `pochta connections [ACTION]`
 
 Describe the command here
 
 ```
 USAGE
-  $ pochta connections
-
-OPTIONS
-  -n, --name=name  name to print
+  $ pochta connections [ACTION]
 
 DESCRIPTION
   ...
@@ -70,13 +67,16 @@ DESCRIPTION
 
 _See code: [src/commands/contacts.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/contacts.js)_
 
-## `pochta esp [ACTION]`
+## `pochta esp`
 
 Describe the command here
 
 ```
 USAGE
-  $ pochta esp [ACTION]
+  $ pochta esp
+
+OPTIONS
+  -n, --name=name  name to print
 
 DESCRIPTION
   ...

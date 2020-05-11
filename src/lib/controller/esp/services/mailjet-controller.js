@@ -1,17 +1,34 @@
 const axios = require('axios')
 const _ = require('lodash')
 
-const MailJetController = {
-  test: (esp, profile) => {
-    MailJetController.send(esp, [profile], profile, '[TEST] Connection Test', 'This is a just a test email.', null, false, false)
-  },
+const EspServiceController = require('./esp-service-controller')
 
-  send: (esp, to, from, subject, html, cc, autoIncludeMeAsCc = true, autoIncludeMeAsReplyTo = true) => {
+const BASE_URL = 'https://api.mailjet.com/v3.1'
+
+class MailJetController extends EspServiceController {
+  test(contact) {
+
+    if (!contact) {
+      throw new Error(`MailJet connection can't be tested without a contact`)
+    }
+
+    let data = this.payload(this.object, [contact], null, contact, this.subjectForTest, this.subjectForMessage, false, false)
+
+    return axios.post('/send', data, {
+      auth: {
+        username: this.object.apiKey,
+        password: this.object.apiSecret
+      },
+      baseURL: BASE_URL
+    })
+  }
+
+  payload(esp, to, cc, from, subject, html, autoIncludeMeAsCc = true, autoIncludeMeAsReplyTo = true) {
     // default payload
     let payload = {
       From: {
         Email: esp.sender,
-        Name: from.name
+        Name: `${from.firstname} ${from.lastname}`
       },
       Subject: subject,
       HTMLPart: html
@@ -19,24 +36,20 @@ const MailJetController = {
 
     // auto reply to
     if (autoIncludeMeAsReplyTo) {
-      Object.assign(payload, {
-        ReplyTo : {
-          Email: from.email,
-          Name: from.name
-        }
-      })
+      payload.ReplyTo = {
+        Email: from.email,
+        Name: `${from.firstname} ${from.lastname}`
+      }
     }
 
     // to
     if (to && to.length > 0) {
-      let recipients = _.map(to, (recipient) => {
-          return {
-            Email: recipient.email,
-            Name: recipient.name
-          }
+      payload.To = _.map(to, (recipient) => {
+        return {
+          Email: recipient.email,
+          Name: `${recipient.firstname} ${recipient.lastname}`
+        }
       })
-
-      Object.assign(payload, { To : recipients })
     }
 
     // cc
@@ -44,10 +57,10 @@ const MailJetController = {
 
     // 1) loop
     if (cc && cc.length > 0) {
-      ccRecipients = _.map(to, (recipient) => {
+      ccRecipients = _.map(cc, (recipient) => {
         return {
           Email: recipient.email,
-          Name: recipient.name
+          Name: `${recipient.firstname} ${recipient.lastname}`
         }
       })
     } else {
@@ -58,25 +71,17 @@ const MailJetController = {
     if (autoIncludeMeAsCc) {
       ccRecipients.push({
         Email: from.email,
-        Name: from.name
+        Name: `${from.firstname} ${from.lastname}`
       })
     }
 
     // merge
     if (ccRecipients.length > 0) {
-      Object.assign(payload, { Cc : ccRecipients })
+      payload.Cc = ccRecipients
     }
 
     // bind data
-    const data = { Messages: [payload] }
-
-    // make api call
-    return axios.post('https://api.mailjet.com/v3.1/send', data, {
-      auth: {
-        username: esp.apiKey,
-        password: esp.apiSecret
-      }
-    })
+    return { Messages: [payload] }
   }
 }
 

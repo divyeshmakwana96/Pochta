@@ -1,6 +1,6 @@
 const CrudCommand = require('../lib/command/crud-command')
 const ContactController = require('../lib/controller/contacts/contact-controller')
-const ContactInquirer = require('../lib/inquirer/contacts/contact-inquirer')
+const ContactInquirer = require('../lib/controller/contacts/contact-inquirer')
 
 class ContactsCommand extends CrudCommand {
   async run() {

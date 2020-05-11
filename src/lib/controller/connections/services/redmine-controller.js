@@ -34,57 +34,51 @@ class RedmineController extends APIController {
       ]).then(res => {
         // 1) profiles
         let account = res[0].data && res[0].data.user
-        let profileController = new ProfileController()
-        let profiles = profileController.get()
-        this.putContact(account, profiles, profileController)
+        if (account) {
+          this.update([account], new ProfileController())
+        }
 
         // 2) contacts
-        let contactController = new ContactController()
         let users = res[1].data && res[1].data.users
         if (users) {
-          let user
-
-          console.log(users)
-
-          for (user of users) {
-            this.putContact(user, users, contactController)
-          }
+          this.update(users, new ContactController())
         }
-      })
 
+        // Return Promise
+        return Promise.resolve()
+      })
     } catch (e) {
       return Promise.reject(e)
     }
-
   }
 
-  putContact(contact, list, controller) {
-    let existing = _.find(list, (profile) => {
-      return profile.connection && profile.connection.id === this.object.id && profile.connection.refId === contact.id
-    })
+  update(collection, controller) {
 
-    if (existing) {
+    let existing = controller.get()
+    let updates = []
+
+    for (let obj of collection) {
       // update
-      existing.label = this.object.label
-      existing.firstname = contact.firstname
-      existing.lastname = contact.lastname
-      existing.email = contact.mail
-      controller.update(existing)
-
-    } else {
-      // add
-      let object = {
+      let update = {
         label: this.object.label,
-        firstname: contact.firstname,
-        lastname: contact.lastname,
-        email: contact.mail,
+        firstname: obj.firstname,
+        lastname: obj.lastname,
+        email: obj.mail,
         connection: {
           id: this.object.id,
-          refId: contact.id
+          refId: obj.id
         }
       }
-      controller.add(object)
+
+      let object = _.find(existing, (profile) => {
+        return profile.connection && profile.connection.id === this.object.id && profile.connection.refId === obj.id
+      })
+
+      if (!object) { object = {} }
+      updates.push(_.mergeWith(object, update))
     }
+
+    controller.putBatch(updates)
   }
 }
 

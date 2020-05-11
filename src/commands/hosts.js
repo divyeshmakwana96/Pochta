@@ -1,9 +1,9 @@
-const ora = require('ora')
-
 const CrudCommand = require('../lib/command/crud-command')
 const HostController = require('../lib/controller/hosts/host-controller')
 const ServiceController = require('../lib/controller/hosts/service-controller')
-const HostInquirer = require('../lib/inquirer/hosts/host-inquirer')
+const HostInquirer = require('../lib/controller/hosts/host-inquirer')
+
+const OptionType = require('../lib/enums').OptionType
 
 class HostsCommand extends CrudCommand {
   async run() {
@@ -13,9 +13,16 @@ class HostsCommand extends CrudCommand {
     await super.run()
   }
 
-  async performConnectionTest(host) {
-    let service = new ServiceController(host)
-    await ora.promise(service.test(), 'testing..')
+  async handleOption(option, host) {
+    switch (option) {
+      case OptionType.Test: {
+        let service = new ServiceController(host)
+        await service.test()
+        break
+      }
+      default:
+        super.handleOption(option, host)
+    }
   }
 }
 

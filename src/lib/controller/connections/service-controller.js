@@ -1,4 +1,5 @@
 const APIController = require('../api-controller')
+const ora = require('../../ora')
 const ConnectionType = require('../../enums').ConnectionType
 
 const RedmineController = require('./services/redmine-controller')
@@ -18,7 +19,13 @@ class ServiceController extends APIController {
     }
 
     if (controller) {
-      return controller.test()
+      return ora(controller.test(), 'testing..', 'success!!', function (e) {
+        if (e instanceof Error) {
+          return (e && e.response && e.response.data && e.response.data.ErrorMessage)
+        } else {
+          return e
+        }
+      })
     }
   }
 
@@ -36,7 +43,13 @@ class ServiceController extends APIController {
     }
 
     if (controller) {
-      return controller.sync()
+      return ora(controller.sync(), 'syncing..', 'profiles and contacts are synced successfully with this connection!!', function (e) {
+        if (e instanceof Error) {
+          return (e && e.response && e.response.data && e.response.data.ErrorMessage)
+        } else {
+          return e
+        }
+      })
     }
   }
 }
