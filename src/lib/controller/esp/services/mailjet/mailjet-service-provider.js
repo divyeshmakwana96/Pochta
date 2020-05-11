@@ -1,11 +1,11 @@
 const axios = require('axios')
 const _ = require('lodash')
 
-const BaseEspServiceProvider = require('./base-esp-service-provider')
+const BaseEspServiceProvider = require('../base-esp-service-provider')
 
 const BASE_URL = 'https://api.mailjet.com/v3.1'
 
-class MailJetController extends BaseEspServiceProvider {
+class MailjetServiceProvider extends BaseEspServiceProvider {
   test(contact) {
 
     if (!contact) {
@@ -85,4 +85,4 @@ class MailJetController extends BaseEspServiceProvider {
   }
 }
 
-module.exports = MailJetController
+module.exports = MailjetServiceProvider

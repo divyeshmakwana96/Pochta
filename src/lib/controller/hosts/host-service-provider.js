@@ -2,9 +2,9 @@ const ApiServiceProvider = require('../api-service-provider')
 const ora = require('../../ora')
 const HostType = require('../../enums').HostType
 
-const AWSController = require('./services/aws-service-provider')
-const CloudinaryController = require('./services/cloudinary-service-provider')
-const ImageKitController = require('./services/imagekit-service-provider')
+const AWSServiceProvider = require('./services/aws/aws-service-provider')
+const CloudinaryServiceProvider = require('./services/cloudinary/cloudinary-service-provider')
+const ImageKitServiceProvider = require('./services/imagekit/imagekit-service-provider')
 
 class HostServiceProvider extends ApiServiceProvider {
   test(payload) {
@@ -16,13 +16,13 @@ class HostServiceProvider extends ApiServiceProvider {
     let controller
     switch (type) {
       case HostType.S3:
-        controller = new AWSController(this.object)
+        controller = new AWSServiceProvider(this.object)
         break
       case HostType.Cloudinary:
-        controller = new CloudinaryController(this.object)
+        controller = new CloudinaryServiceProvider(this.object)
         break
       case HostType.ImageKit:
-        controller = new ImageKitController(this.object)
+        controller = new ImageKitServiceProvider(this.object)
         break
     }
 

@@ -1,9 +1,9 @@
 const AWS = require('aws-sdk')
-const ApiServiceProvider = require('../../api-service-provider')
+const ApiServiceProvider = require('../../../api-service-provider')
 
 AWS.config.setPromisesDependency(require('bluebird'))
 
-class AwsServiceProvider extends ApiServiceProvider {
+class AWSServiceProvider extends ApiServiceProvider {
   test(payload) {
     const s3 = new AWS.S3({
       accessKeyId: this.object.accessKeyId,
@@ -20,4 +20,4 @@ class AwsServiceProvider extends ApiServiceProvider {
   }
 }
 
-module.exports = AwsServiceProvider
+module.exports = AWSServiceProvider

@@ -1,5 +1,5 @@
 const cloudinary = require('cloudinary').v2
-const ApiServiceProvider = require('../../api-service-provider')
+const ApiServiceProvider = require('../../../api-service-provider')
 
 class CloudinaryServiceProvider extends ApiServiceProvider {
   test(payload) {

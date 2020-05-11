@@ -1,9 +1,9 @@
 const nodemailer = require("nodemailer")
 const _ = require('lodash')
 
-const BaseEspServiceProvider = require('./base-esp-service-provider')
+const BaseEspServiceProvider = require('../base-esp-service-provider')
 
-class SMTPController extends BaseEspServiceProvider {
+class SMTPServiceProvider extends BaseEspServiceProvider {
   test(contact) {
 
     if (!contact) {
@@ -62,4 +62,4 @@ class SMTPController extends BaseEspServiceProvider {
   }
 }
 
-module.exports = SMTPController
+module.exports = SMTPServiceProvider

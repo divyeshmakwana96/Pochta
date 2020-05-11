@@ -1,11 +1,14 @@
 const CrudInquirer = require('../crud-inquirer')
 const inquirer = require('inquirer')
-const chalk = require('chalk')
 const _ = require('lodash')
 
 const Enums = require('../../enums')
 const HostType = Enums.HostType
 const OptionType = Enums.OptionType
+
+const AWSInquirer = require('./services/aws/aws-inquirer')
+const CloudinaryInquirer = require('./services/cloudinary/cloudinary-inquirer')
+const ImageKitInquirer = require('./services/imagekit/imagekit-inquirer')
 
 class HostInquirer extends CrudInquirer {
   constructor() {
@@ -41,106 +44,26 @@ class HostInquirer extends CrudInquirer {
       host = {type: type.key}
     }
 
-    let promise
+    let controller
     if (type) {
       switch (type) {
         case HostType.S3:
-          promise = this.askS3SetupQuestions(host)
+          controller = new AWSInquirer()
           break
         case HostType.Cloudinary:
-          promise = this.askCloudinarySetupQuestions(host)
+          controller = new CloudinaryInquirer()
           break
         case HostType.ImageKit:
-          promise = this.askImageKitSetupQuestions(host)
+          controller = new ImageKitInquirer()
           break
       }
     }
 
-    // get answers
-    let answers = await promise
-    answers.type = host.type
-    return answers
-  }
-
-  // S3
-  askS3SetupQuestions(host) {
-    const questions = [
-      {
-        name: 'label',
-        type: 'input',
-        message: `Enter a label ${chalk.gray('(optional)')}:`,
-        default: host && host.label || null
-      },
-      {
-        name: 'bucketName',
-        type: 'input',
-        message: 'Enter the bucket name:',
-        default: host && host.bucketName || null
-      },
-      {
-        name: 'accessKeyId',
-        type: 'input',
-        message: 'Enter access key id:',
-        default: host && host.accessKeyId || null
-      },
-      {
-        name: 'secretAccessKey',
-        type: 'input',
-        message: 'Enter secret access key:',
-        default: host && host.secretAccessKey || null
-      }
-    ]
-    return inquirer.prompt(questions)
-  }
-
-  // Cloudinary
-  askCloudinarySetupQuestions(host) {
-    const questions = [
-      {
-        name: 'label',
-        type: 'input',
-        message: `Enter a label ${chalk.gray('(optional)')}:`,
-        default: host && host.label || null
-      },
-      {
-        name: 'cloudName',
-        type: 'input',
-        message: 'Enter the cloud name:',
-        default: host && host.cloudName || null
-      },
-      {
-        name: 'apiKey',
-        type: 'input',
-        message: 'Enter the api key:',
-        default: host && host.apiKey || null
-      },
-      {
-        name: 'apiSecret',
-        type: 'input',
-        message: 'Enter the api secret:',
-        default: host && host.apiSecret || null
-      }
-    ]
-    return inquirer.prompt(questions)
-  }
-
-  // ImageKit
-  askImageKitSetupQuestions(host) {
-    const questions = [
-      {
-        name: 'label',
-        type: 'input',
-        message: `Enter a label ${chalk.gray('(optional)')}:`,
-        default: host && host.label || null
-      },
-      {
-        name: 'privateKey',
-        type: 'input',
-        message: 'Enter the private key:',
-        default: host && host.privateKey || null
-      }
-    ]
-    return inquirer.prompt(questions)
+    if (controller) {
+      let answers = await controller.askSetupQuestions(host)
+      answers.type = host.type
+      return answers
+    }
   }
 }
 

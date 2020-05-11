@@ -2,8 +2,8 @@ const ApiServiceProvider = require('../api-service-provider')
 const ora = require('../../ora')
 const EspType = require('../../enums').EspType
 
-const MailJetController = require('./services/mailjet-controller')
-const SMTPController = require('./services/smtp-controller')
+const MailjetServiceProvider = require('./services/mailjet/mailjet-service-provider')
+const SMTPServiceProvider = require('./services/smtp/smtp-service-provider')
 
 const ProfileController = require('../../controller/profiles/profile-controller')
 const ProfileInquirer = require('../profiles/profile-inquirer')
@@ -18,13 +18,13 @@ class EspServiceProvider extends ApiServiceProvider {
     let controller
     switch (type) {
       case EspType.SendGrid:
-        controller = new MailJetController(this.object)
+        controller = new MailjetServiceProvider(this.object)
         break
       case EspType.MailJet:
-        controller = new MailJetController(this.object)
+        controller = new MailjetServiceProvider(this.object)
         break
       case EspType.SMTP:
-        controller = new SMTPController(this.object)
+        controller = new SMTPServiceProvider(this.object)
         break
     }
 
