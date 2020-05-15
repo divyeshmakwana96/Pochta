@@ -3,14 +3,14 @@ const _ = require('lodash')
 const PayloadProvider = require('../payload-provider')
 
 class SendGridPayloadProvider extends PayloadProvider {
-  payload() {
 
+  payload() {
     let personalization = {
       to: this.getTo(),
       subject: this.subject
     }
 
-    if (this.ccRecipients.length > 0) {
+    if (this.hasCc()) {
       personalization.cc = this.getCc()
     }
 

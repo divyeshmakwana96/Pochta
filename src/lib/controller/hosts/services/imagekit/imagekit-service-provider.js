@@ -4,7 +4,7 @@ const ApiServiceProvider = require('../../../api-service-provider')
 const BASE_URL = 'https://api.imagekit.io/v1'
 
 class ImageKitServiceProvider extends ApiServiceProvider {
-  test(payload) {
+  test() {
     return axios.get('/files', {
       auth: {
         username: this.object.privateKey,

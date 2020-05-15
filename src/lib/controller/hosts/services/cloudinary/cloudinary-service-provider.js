@@ -2,7 +2,7 @@ const cloudinary = require('cloudinary').v2
 const ApiServiceProvider = require('../../../api-service-provider')
 
 class CloudinaryServiceProvider extends ApiServiceProvider {
-  test(payload) {
+  test() {
     cloudinary.config({
       cloud_name: this.object.cloudName,
       api_key: this.object.apiKey,

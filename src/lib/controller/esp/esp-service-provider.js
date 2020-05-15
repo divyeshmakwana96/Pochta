@@ -34,9 +34,6 @@ class ESPServiceProvider extends APIServiceProvider {
       case ESPType.SES:
         controller = new SESServiceProvider(this.object)
         break
-      case ESPType.SMTP:
-        controller = new SMTPServiceProvider(this.object)
-        break
     }
 
     if (controller) {
@@ -47,7 +44,9 @@ class ESPServiceProvider extends APIServiceProvider {
 
       if (choice) {
         return ora(controller.test(choice.profile.object), 'sending a test email..', 'email sent successfully!!', function (e) {
-          console.log(e.response.data.errors)
+          // Sendgrid e.response.data.errors
+
+          console.log(e)
           if (e instanceof Error) {
             return (e && e.response && e.response.data && e.response.data.ErrorMessage)
           } else {

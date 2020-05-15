@@ -1,6 +1,5 @@
 const CrudInquirer = require('../../../crud-inquirer')
 const inquirer = require('inquirer')
-const chalk = require('chalk')
 const _ = require('lodash')
 
 class GmailInquirer extends CrudInquirer {
@@ -18,7 +17,7 @@ class GmailInquirer extends CrudInquirer {
       },
       {
         name: 'config.auth.pass',
-        type: 'input',
+        type: 'password',
         message: 'Enter the password:',
         default: esp && esp.config && esp.config.auth && esp.config.auth.pass
       }

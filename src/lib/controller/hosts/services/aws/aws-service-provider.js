@@ -4,7 +4,7 @@ const ApiServiceProvider = require('../../../api-service-provider')
 AWS.config.setPromisesDependency(require('bluebird'))
 
 class AWSServiceProvider extends ApiServiceProvider {
-  test(payload) {
+  test() {
     const s3 = new AWS.S3({
       accessKeyId: this.object.accessKeyId,
       secretAccessKey: this.object.secretAccessKey

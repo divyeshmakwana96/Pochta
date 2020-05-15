@@ -7,7 +7,7 @@ const CloudinaryServiceProvider = require('./services/cloudinary/cloudinary-serv
 const ImageKitServiceProvider = require('./services/imagekit/imagekit-service-provider')
 
 class HostServiceProvider extends ApiServiceProvider {
-  test(payload) {
+  test() {
     let type = HostType.get(this.object && this.object.type)
     if (!type) {
       throw new Error('Invalid host type')
@@ -27,7 +27,7 @@ class HostServiceProvider extends ApiServiceProvider {
     }
 
     if (controller) {
-      return ora(controller.test(this.object), 'testing..', 'success!!', function (e) {
+      return ora(controller.test(), 'testing..', 'success!!', function (e) {
         if (e instanceof Error) {
           return (e && e.response && e.response.data && e.response.data.ErrorMessage)
         } else {

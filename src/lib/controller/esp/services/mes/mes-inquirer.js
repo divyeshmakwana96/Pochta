@@ -1,6 +1,5 @@
 const CrudInquirer = require('../../../crud-inquirer')
 const inquirer = require('inquirer')
-const chalk = require('chalk')
 const validator = require('validator')
 const _ = require('lodash')
 
@@ -12,12 +11,6 @@ class MESInquirer extends CrudInquirer {
   async askSetupQuestions(esp) {
     const questions = [
       {
-        name: 'label',
-        type: 'input',
-        message: `Enter a label ${chalk.gray('(optional)')}:`,
-        default: esp && esp.label
-      },
-      {
         name: 'config.auth.user',
         type: 'input',
         message: 'Enter the username:',
@@ -25,7 +18,7 @@ class MESInquirer extends CrudInquirer {
       },
       {
         name: 'config.auth.pass',
-        type: 'input',
+        type: 'password',
         message: 'Enter the password:',
         default: esp && esp.config && esp.config.auth && esp.config.auth.pass
       }
@@ -34,10 +27,10 @@ class MESInquirer extends CrudInquirer {
     let answers = await inquirer.prompt(questions)
     let alias = await inquirer.prompt([
       {
-        name: 'config.email',
+        name: 'config.sender',
         type: 'input',
         message: 'Enter email address:',
-        default: (esp && esp.config && esp.config.email) ||
+        default: (esp && esp.config && esp.config.sender) ||
           (validator.isEmail(answers.config.auth.user) ? answers.config.auth.user : null)
       }
     ])
