@@ -1,5 +1,6 @@
 const packageJson = require('../../../package.json')
 const configstore = require('configstore')
+const path = require('path')
 
 const uniqueString = require('unique-string')
 const chalk = require('chalk')
@@ -8,7 +9,7 @@ const _ = require('lodash')
 class ModelController {
   constructor(collectionKey) {
     this.collectionKey = collectionKey
-    this.configs = new configstore(packageJson.name + '-' + collectionKey, { [collectionKey]: [] })
+    this.configs = new configstore(path.join(packageJson.name, collectionKey), { [collectionKey]: [] })
   }
 
   get() {
@@ -19,10 +20,6 @@ class ModelController {
     let objects = this.configs.get(this.collectionKey)
     let mapped = _.map(objects, (object) => {
       let title = this.getTitle(object)
-      if (object.label && object.label.length > 0) {
-        title += ' (' + object.label + ')'
-      }
-
       // Highlight if from a connection
       let name = (object.connection && object.connection.id) ? chalk.yellow(title) : title
 
@@ -110,7 +107,7 @@ class ModelController {
 
   // Getters
   getTitle(object) {
-    return object.name || object.type || 'Unknown Profile'
+    return object.type || 'Unknown'
   }
 }
 

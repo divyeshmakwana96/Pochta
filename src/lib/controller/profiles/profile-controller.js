@@ -1,4 +1,5 @@
 const ModelController = require('../model-controller')
+const chalk = require('chalk')
 
 class ProfileController extends ModelController {
   constructor() {
@@ -6,7 +7,7 @@ class ProfileController extends ModelController {
   }
 
   getTitle(object) {
-    return `${object.firstname || 'Unknown' } ${object.lastname || 'Unknown' }`
+    return `${object.firstname || 'Unknown' } ${object.lastname || 'Unknown' } ${chalk.bold(`<${object.email}>`)}`
   }
 }
 

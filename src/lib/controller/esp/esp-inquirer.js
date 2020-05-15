@@ -3,58 +3,67 @@ const inquirer = require('inquirer')
 const _ = require('lodash')
 
 const Enums = require('../../enums')
-const EspType = Enums.EspType
+const ESPType = Enums.ESPType
 const OptionType = Enums.OptionType
 
+const GmailInquirer = require('./services/gmail/gmail-inquirer')
 const MailJetInquirer = require('./services/mailjet/mailjet-inquirer')
+const MESInquirer = require('./services/mes/mes-inquirer')
 const SendGridInquirer = require('./services/sendgrid/sendgrid-inquirer')
-const SMTPInquirer = require('./services/smtp/smtp-inquirer')
+const SESInquirer = require('./services/ses/ses-inquirer')
 
-class EspInquirer extends CrudInquirer {
+class ESPInquirer extends CrudInquirer {
   constructor() {
     super('esp', [OptionType.View, OptionType.Edit, OptionType.Delete, OptionType.Test])
   }
 
   // selection type
-  askEspTypeSelection() {
+  askESPTypeSelection() {
+    let mapped = _.map(ESPType.enums, (enm) => {
+      return {
+        name: Enums.describe(enm),
+        value: enm
+      }
+    })
+
     const question = [
       {
         name: 'type',
         type: 'list',
         message: 'Which email service provider you would like to add?',
-        choices: _.map(EspType.enums, (enm) => {
-          return {
-            name: enm.key,
-            value: enm
-          }
-        })
+        choices: _.sortBy(mapped, 'name')
       }
     ]
-
     return inquirer.prompt(question)
   }
 
   // setup
   async askSetupQuestions(esp) {
 
-    let type = esp && esp.type && EspType.get(esp.type)
+    let type = esp && esp.type && ESPType.get(esp.type)
     if (!type) {
-      let choice = await this.askEspTypeSelection()
+      let choice = await this.askESPTypeSelection()
       type = choice.type
-      esp = {type: type.key}
+      esp = {type: type.key.toLowerCase()}
     }
 
     let controller
     if (type) {
       switch (type) {
-        case EspType.SendGrid:
-          controller = new SendGridInquirer()
+        case ESPType.Gmail:
+          controller = new GmailInquirer()
           break
-        case EspType.MailJet:
+        case ESPType.MailJet:
           controller = new MailJetInquirer()
           break
-        case EspType.SMTP:
-          controller = new SMTPInquirer()
+        case ESPType.MES:
+          controller = new MESInquirer()
+          break
+        case ESPType.SendGrid:
+          controller = new SendGridInquirer()
+          break
+        case ESPType.SES:
+          controller = new SESInquirer()
           break
       }
     }
@@ -67,4 +76,4 @@ class EspInquirer extends CrudInquirer {
   }
 }
 
-module.exports = EspInquirer
+module.exports = ESPInquirer

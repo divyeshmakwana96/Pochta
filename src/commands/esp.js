@@ -1,14 +1,14 @@
 const CrudCommand = require('../lib/command/crud-command')
-const EspController = require('../lib/controller/esp/esp-controller')
-const EspServiceProvider = require('../lib/controller/esp/esp-service-provider')
-const EspInquirer = require('../lib/controller/esp/esp-inquirer')
+const ESPController = require('../lib/controller/esp/esp-controller')
+const ESPServiceProvider = require('../lib/controller/esp/esp-service-provider')
+const ESPInquirer = require('../lib/controller/esp/esp-inquirer')
 
 const OptionType = require('../lib/enums').OptionType
 
-class EspCommand extends CrudCommand {
+class ESPCommand extends CrudCommand {
   async run() {
-    this.controller = new EspController()
-    this.inquirer = new EspInquirer()
+    this.controller = new ESPController()
+    this.inquirer = new ESPInquirer()
 
     await super.run()
   }
@@ -16,7 +16,7 @@ class EspCommand extends CrudCommand {
   async handleOption(option, esp) {
     switch (option) {
       case OptionType.Test: {
-        let service = new EspServiceProvider(esp)
+        let service = new ESPServiceProvider(esp)
         await service.test()
         break
       }
@@ -26,9 +26,9 @@ class EspCommand extends CrudCommand {
   }
 }
 
-EspCommand.description = `Describe the command here
+ESPCommand.description = `Describe the command here
 ...
 Extra documentation goes here
 `
 
-module.exports = EspCommand
+module.exports = ESPCommand

@@ -1,29 +1,40 @@
-const ApiServiceProvider = require('../api-service-provider')
+const APIServiceProvider = require('../api-service-provider')
 const ora = require('../../ora')
-const EspType = require('../../enums').EspType
+const ESPType = require('../../enums').ESPType
 
-const MailjetServiceProvider = require('./services/mailjet/mailjet-service-provider')
+const MailJetServiceProvider = require('./services/mailjet/mailjet-service-provider')
+const SendGridServiceProvider = require('./services/sendgrid/sendgrid-service-provider')
+const SESServiceProvider = require('./services/ses/ses-service-provider')
 const SMTPServiceProvider = require('./services/smtp/smtp-service-provider')
 
 const ProfileController = require('../../controller/profiles/profile-controller')
 const ProfileInquirer = require('../profiles/profile-inquirer')
 
-class EspServiceProvider extends ApiServiceProvider {
+class ESPServiceProvider extends APIServiceProvider {
   async test(payload) {
-    let type = EspType.get(this.object && this.object.type)
+    let type = ESPType.get(this.object && this.object.type)
     if (!type) {
       throw new Error('Invalid esp type')
     }
 
     let controller
     switch (type) {
-      case EspType.SendGrid:
-        controller = new MailjetServiceProvider(this.object)
+      case ESPType.Gmail:
+        controller = new SMTPServiceProvider(this.object)
         break
-      case EspType.MailJet:
-        controller = new MailjetServiceProvider(this.object)
+      case ESPType.MailJet:
+        controller = new MailJetServiceProvider(this.object)
         break
-      case EspType.SMTP:
+      case ESPType.MES:
+        controller = new SMTPServiceProvider(this.object)
+        break
+      case ESPType.SendGrid:
+        controller = new SendGridServiceProvider(this.object)
+        break
+      case ESPType.SES:
+        controller = new SESServiceProvider(this.object)
+        break
+      case ESPType.SMTP:
         controller = new SMTPServiceProvider(this.object)
         break
     }
@@ -36,6 +47,7 @@ class EspServiceProvider extends ApiServiceProvider {
 
       if (choice) {
         return ora(controller.test(choice.profile.object), 'sending a test email..', 'email sent successfully!!', function (e) {
+          console.log(e.response.data.errors)
           if (e instanceof Error) {
             return (e && e.response && e.response.data && e.response.data.ErrorMessage)
           } else {
@@ -47,4 +59,4 @@ class EspServiceProvider extends ApiServiceProvider {
   }
 }
 
-module.exports = EspServiceProvider
+module.exports = ESPServiceProvider

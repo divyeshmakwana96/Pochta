@@ -1,7 +1,8 @@
-export default class {
-  constructor(label, name, email) {
-    this.label = label
-    this.name = name
-    this.email = email
+class Contact {
+  constructor(object) {
+    Object.assign(this, object)
+    this.name = `${object.firstname} ${object.lastname}`
   }
 }
+
+module.exports = Contact

@@ -66,9 +66,11 @@ class CrudCommand extends Command {
         this.controller.add(profile)
         ora('saving..').start().succeed(`${this.inquirer && this.inquirer.entityName || 'object'} added`)
 
-        let test = await this.inquirer.askConnectionTestConfirm()
-        if (test.confirm) {
-          await this.handleOption(OptionType.Test, profile)
+        if (_.find(this.inquirer.objectOptions, OptionType.Test)) {
+          let test = await this.inquirer.askConnectionTestConfirm()
+          if (test.confirm) {
+            await this.handleOption(OptionType.Test, profile)
+          }
         }
       }
     } else {
@@ -83,7 +85,6 @@ class CrudCommand extends Command {
   handleAction(action) {
     throw new Error(`Invalid argument '${action}'. Run help command to see available options`)
   }
-
 }
 
 CrudCommand.args = [

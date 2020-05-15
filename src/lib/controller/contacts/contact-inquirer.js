@@ -10,12 +10,6 @@ class ContactInquirer extends CrudInquirer {
   askSetupQuestions(contact) {
     const questions = [
       {
-        name: 'label',
-        type: 'input',
-        message: `Enter a label ${chalk.gray('(optional)')}:`,
-        default: contact && contact.label || null
-      },
-      {
         name: 'firstname',
         type: 'input',
         message: 'Enter first name:',

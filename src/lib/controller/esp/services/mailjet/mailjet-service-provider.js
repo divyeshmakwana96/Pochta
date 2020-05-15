@@ -1,33 +1,39 @@
 const axios = require('axios')
 const _ = require('lodash')
 
-const BaseEspServiceProvider = require('../base-esp-service-provider')
+const BaseESPServiceProvider = require('../base-esp-service-provider')
 
 const BASE_URL = 'https://api.mailjet.com/v3.1'
 
-class MailjetServiceProvider extends BaseEspServiceProvider {
+class MailJetServiceProvider extends BaseESPServiceProvider {
   test(contact) {
 
     if (!contact) {
       throw new Error(`MailJet connection can't be tested without a contact`)
     }
 
-    let data = this.payload(this.object, [contact], null, contact, this.subjectForTest, this.subjectForMessage, false, false)
+    let data = this.payload([contact], null, contact, this.subjectForTest, this.bodyForTest, false, false)
 
     return axios.post('/send', data, {
       auth: {
-        username: this.object.apiKey,
-        password: this.object.apiSecret
+        username: this.object.config.apiKey,
+        password: this.object.config.apiSecret
       },
       baseURL: BASE_URL
     })
   }
 
-  payload(esp, to, cc, from, subject, html, autoIncludeMeAsCc = true, autoIncludeMeAsReplyTo = true) {
+  payload(to, cc, from, subject, html, autoIncludeMeAsCc = true, autoIncludeMeAsReplyTo = true) {
+
+    let sender = this.object.config && this.object.config.sender
+    if (!sender) {
+      throw new Error('Sender can\'t be nil for a MailJet account')
+    }
+
     // default payload
     let payload = {
       From: {
-        Email: esp.sender,
+        Email: sender,
         Name: `${from.firstname} ${from.lastname}`
       },
       Subject: subject,
@@ -85,4 +91,4 @@ class MailjetServiceProvider extends BaseEspServiceProvider {
   }
 }
 
-module.exports = MailjetServiceProvider
+module.exports = MailJetServiceProvider

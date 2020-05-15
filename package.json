@@ -30,7 +30,8 @@
     "nodemailer": "^6.4.6",
     "ora": "^4.0.3",
     "puppeteer-core": "^3.0.3",
-    "unique-string": "^2.0.0"
+    "unique-string": "^2.0.0",
+    "validator": "^13.0.0"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.2",

@@ -1,24 +1,35 @@
 const nodemailer = require("nodemailer")
 const _ = require('lodash')
 
-const BaseEspServiceProvider = require('../base-esp-service-provider')
+const BaseESPServiceProvider = require('../base-esp-service-provider')
 
-class SMTPServiceProvider extends BaseEspServiceProvider {
+class SMTPServiceProvider extends BaseESPServiceProvider {
+
+  constructor(object, transporter) {
+    super(object)
+    this.transporter = transporter || nodemailer.createTransport(object.config)
+  }
+
   test(contact) {
-
     if (!contact) {
       throw new Error(`SMTP connection can't be tested without a contact`)
     }
 
-    let transporter = nodemailer.createTransport(this.object)
-    let data = this.payload(this.object, [contact], null, contact, this.subjectForTest, this.subjectForMessage, false, false)
-    return transporter.sendMail(data)
+    let data = this.payload([contact], null, contact, this.subjectForTest, this.bodyForTest, false, false)
+    return this.transporter.sendMail(data)
   }
 
-  payload(esp, to, cc, from, subject, html, autoIncludeMeAsCc = true, autoIncludeMeAsReplyTo = true) {
+  payload(to, cc, from, subject, html, autoIncludeMeAsCc = true, autoIncludeMeAsReplyTo = true) {
+
+    let config = this.object.config
+    let sender = config && (config.sender || config.auth.user)
+    if (!sender) {
+      throw new Error('Sender can\'t be nil for an SMTP account')
+    }
+
     // default payload
     let payload = {
-      from: `"${from.firstname} ${from.lastname}" <${esp.auth.user}>`,
+      from: `"${from.firstname} ${from.lastname}" <${sender}>`,
       subject: subject,
       html: html
     }
@@ -56,6 +67,8 @@ class SMTPServiceProvider extends BaseEspServiceProvider {
     if (ccRecipients.length > 0) {
       payload.Cc = _.join(ccRecipients)
     }
+
+    // console.log(payload)
 
     // bind data
     return payload

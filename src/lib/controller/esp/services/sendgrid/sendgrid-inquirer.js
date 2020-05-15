@@ -16,22 +16,16 @@ class SendGridInquirer extends CrudInquirer {
         default: esp && esp.label
       },
       {
-        name: 'sender',
+        name: 'config.sender',
         type: 'input',
         message: 'Enter the sender email address:',
-        default: esp && esp.sender
+        default: esp && esp.config && esp.config.sender
       },
       {
-        name: 'apiKey',
+        name: 'config.apiKey',
         type: 'input',
         message: 'Enter the api key:',
-        default: esp && esp.apiKey
-      },
-      {
-        name: 'apiSecret',
-        type: 'input',
-        message: 'Enter the api secret:',
-        default: esp && esp.apiSecret
+        default: esp && esp.config && esp.config.apiKey
       }
     ]
     return inquirer.prompt(questions)
