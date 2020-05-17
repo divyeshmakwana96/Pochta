@@ -1,9 +1,9 @@
 const axios = require('axios')
-const ApiServiceProvider = require('../../../api-service-provider')
+const APIServiceProvider = require('../../../api-service-provider')
 
 const BASE_URL = 'https://api.imagekit.io/v1'
 
-class ImageKitServiceProvider extends ApiServiceProvider {
+class ImageKitServiceProvider extends APIServiceProvider {
   test() {
     return axios.get('/files', {
       auth: {
@@ -12,6 +12,10 @@ class ImageKitServiceProvider extends ApiServiceProvider {
       },
       baseURL: BASE_URL
     })
+  }
+
+  upload(filepath, dir) {
+
   }
 }
 

@@ -1,5 +1,4 @@
-const _ = require('lodash')
-
+const fs = require('../../../../helpers/fs')
 const PayloadProvider = require('../payload-provider')
 
 class SendGridPayloadProvider extends PayloadProvider {
@@ -23,8 +22,19 @@ class SendGridPayloadProvider extends PayloadProvider {
       }]
     }
 
-    if (this.replyTo) { payload.reply_to = this.getReplyTo() }
+    if (this.hasReplyTo()) { payload.replyTo = this.getReplyTo() }
+    if (this.hasAttachments()) { payload.attachments = this.getAttachments() }
     return payload
+  }
+
+  formatAttachment(attachment) {
+    return {
+      content: fs.readFileSyncBase64(attachment.path),
+      type: attachment.contentType,
+      filename: attachment.filename,
+      disposition: attachment.contentDisposition,
+      content_id: attachment.cid
+    }
   }
 }
 

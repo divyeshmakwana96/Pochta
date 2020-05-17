@@ -1,36 +1,18 @@
-const CrudInquirer = require('../../../crud-inquirer')
-const inquirer = require('inquirer')
+const SMTPInquirer = require('../smtp/smtp-inquirer')
 const _ = require('lodash')
 
-class GmailInquirer extends CrudInquirer {
+class GmailInquirer extends SMTPInquirer {
   constructor() {
     super('esp')
   }
 
   async askSetupQuestions(esp) {
-    const questions = [
-      {
-        name: 'config.auth.user',
-        type: 'input',
-        message: 'Enter the email address:',
-        default: esp && esp.config && esp.config.auth && esp.config.auth.user
-      },
-      {
-        name: 'config.auth.pass',
-        type: 'password',
-        message: 'Enter the password:',
-        default: esp && esp.config && esp.config.auth && esp.config.auth.pass
-      }
-    ]
-
-    let answers = await inquirer.prompt(questions)
-    return _.merge(answers, {
-      config: {
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-      }
+    let answers = await super.askSetupQuestions(esp, false, false, {
+      port: 465,
+      secure: true,
     })
+
+    return _.merge(answers, { config: { host: 'smtp.gmail.com' } })
   }
 }
 

@@ -129,5 +129,6 @@ optimized/
 /yarn.lock
 node_modules
 
+/email
 /*.html
 /images

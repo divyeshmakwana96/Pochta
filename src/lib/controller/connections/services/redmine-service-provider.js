@@ -7,24 +7,24 @@ const APIController = require('../../api-service-provider')
 const ProfileController = require('../../profiles/profile-controller')
 const ContactController = require('../../contacts/contact-controller')
 
-class RedmineController extends APIController {
+class RedmineServiceProvider extends APIController {
   test() {
     return axios.get('/my/account.json', {
       auth: {
         username: this.object.apiKey,
         password: uniqueString()
       },
-      baseURL: this.object.baseURL
+      baseURL: this.object.config.baseURL
     })
   }
 
   async sync() {
     const config = {
       auth: {
-        username: this.object.apiKey,
+        username: this.object.config.apiKey,
         password: uniqueString()
       },
-      baseURL: this.object.baseURL
+      baseURL: this.object.config.baseURL
     }
 
     try {
@@ -60,7 +60,6 @@ class RedmineController extends APIController {
     for (let obj of collection) {
       // update
       let update = {
-        label: this.object.label,
         firstname: obj.firstname,
         lastname: obj.lastname,
         email: obj.mail,
@@ -82,4 +81,4 @@ class RedmineController extends APIController {
   }
 }
 
-module.exports = RedmineController
+module.exports = RedmineServiceProvider

@@ -1,7 +1,7 @@
 const cloudinary = require('cloudinary').v2
-const ApiServiceProvider = require('../../../api-service-provider')
+const APIServiceProvider = require('../../../api-service-provider')
 
-class CloudinaryServiceProvider extends ApiServiceProvider {
+class CloudinaryServiceProvider extends APIServiceProvider {
   test() {
     cloudinary.config({
       cloud_name: this.object.cloudName,
@@ -9,6 +9,10 @@ class CloudinaryServiceProvider extends ApiServiceProvider {
       api_secret: this.object.apiSecret
     })
     return cloudinary.uploader.upload('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')
+  }
+
+  upload(filepath, dir) {
+
   }
 }
 

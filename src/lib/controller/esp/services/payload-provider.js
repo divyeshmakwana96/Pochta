@@ -20,6 +20,10 @@ class PayloadProvider {
     this.ccRecipients = _.concat(this.ccRecipients, recipient)
   }
 
+  addAttachment(attachment) {
+    this.attachments = _.concat(this.attachments, attachment)
+  }
+
   hasTo() {
     return this.toRecipients.length > 0
   }
@@ -38,6 +42,18 @@ class PayloadProvider {
 
   getFrom() {
     return this.from && this.formatContact(this.from)
+  }
+
+  hasAttachments() {
+    return this.attachments.length > 0
+  }
+
+  getAttachments() {
+    return _.map(this.attachments, this.formatAttachment)
+  }
+
+  hasReplyTo() {
+    return this.replyTo != null
   }
 
   getReplyTo() {
@@ -63,6 +79,10 @@ class PayloadProvider {
       name: `${contact.firstname} ${contact.lastname}`,
       email: contact.email
     }
+  }
+
+  formatAttachment(attachment) {
+    return attachment
   }
 }
 

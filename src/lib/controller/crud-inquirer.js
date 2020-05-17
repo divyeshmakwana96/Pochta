@@ -23,7 +23,29 @@ class CrudInquirer {
       ]
       return inquirer.prompt(question)
     } else {
-      throw new Error(`${this.entityName} list empty`)
+      throw new Error(`${this.entityName || 'profile'} list empty`)
+    }
+  }
+
+  askMultiSelection(objects, message, minChoiceCount = 0) {
+    if (objects && objects.length > 0) {
+      const question = [
+        {
+          name: 'profile',
+          type: 'checkbox',
+          message: message || `Select ${this.entityName || 'profile'}s you like to choose:`,
+          choices: objects,
+          validate: (value) => {
+            if (value.length < minChoiceCount) {
+              return `Min ${minChoiceCount} selection${minChoiceCount > 0 && 's'} required`
+            }
+            return  true
+          }
+        }
+      ]
+      return inquirer.prompt(question)
+    } else {
+      throw new Error(`${this.entityName || 'profile'} list empty`)
     }
   }
 
@@ -37,9 +59,10 @@ class CrudInquirer {
     })
 
     if (options.length > 2) {
-      options.splice(options.length - 1, 0, new inquirer.Separator())
+      options.splice(options.length - 1, 0, this.separator())
     }
 
+    // build prompt
     const question = [
       {
         name: 'option',
@@ -76,6 +99,13 @@ class CrudInquirer {
   askSetupQuestions(object) {
     console.log('controller needs to override setup method')
   }
+
+  // Extra
+  separator(separatorString) {
+    return new inquirer.Separator(separatorString)
+  }
+
+
 }
 
 module.exports = CrudInquirer

@@ -1,9 +1,23 @@
-const fs = require('fs')
+const fs = require('../helpers/fs')
 const path = require('path')
 
 const _ = require('lodash')
 
 module.exports = {
+  files: (dir = './', types = ['html', 'mjml'], recursive = false) => {
+    if (!fs.isDir(dir)) {
+      throw new Error(`${dir} is not a directory`)
+    }
+
+    return _.map(_.filter(fs.readdirSync(dir, { withFileTypes: true }), file => {
+      return !file.isDirectory() && _.includes(types, file.name.split('.').pop())
+    }), (file) => {
+      return {
+        name: file.name,
+        path: path.join(dir, file.name)
+      }
+    })
+  },
 
     findFilesInDirectory: (dir) => {
         return new Promise((resolve, reject) => {

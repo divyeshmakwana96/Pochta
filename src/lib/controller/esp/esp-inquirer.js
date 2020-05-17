@@ -70,9 +70,47 @@ class ESPInquirer extends CrudInquirer {
 
     if (controller) {
       let answers = await controller.askSetupQuestions(esp)
+      console.log('POST')
       answers.type = esp.type
       return answers
     }
+  }
+
+  // Extra
+  askToIncludeCC() {
+    const question = [
+      {
+        name: 'shouldAddCc',
+        type: 'confirm',
+        message: 'Would you like to add cc?',
+        default: false
+      }
+    ]
+    return inquirer.prompt(question)
+  }
+
+  askMailComposeQuestions(subject, autoCc = true, autoReplyTo = true) {
+    const questions = [
+      {
+        name: 'subject',
+        type: 'input',
+        message: 'Enter a subject line:',
+        default: subject
+      },
+      {
+        name: 'autoCc',
+        type: 'confirm',
+        message: 'Enable auto cc?',
+        default: autoCc
+      },
+      {
+        name: 'autoReplyTo',
+        type: 'confirm',
+        message: 'Enable auto reply-to?',
+        default: autoReplyTo
+      }
+    ]
+    return inquirer.prompt(questions)
   }
 }
 

@@ -38,7 +38,7 @@ class ConnectionInquirer extends CrudInquirer {
     if (!type) {
       let choice = await this.askConnectionTypeSelection()
       type = choice.type
-      conn = {type: type.key}
+      conn = {type: type.key.toLowerCase()}
     }
 
     let promise, syncTypes
@@ -67,13 +67,13 @@ class ConnectionInquirer extends CrudInquirer {
         default: conn && conn.label
       },
       {
-        name: 'baseURL',
+        name: 'config.baseURL',
         type: 'input',
         message: 'Enter Redmine url:',
         default: conn && conn.baseURL
       },
       {
-        name: 'apiKey',
+        name: 'config.apiKey',
         type: 'input',
         message: 'Enter the api key:',
         default: conn && conn.apiKey

@@ -1,10 +1,10 @@
 const APIController = require('../api-service-provider')
-const ora = require('../../ora')
+const ora = require('../../helpers/ora')
 const ConnectionType = require('../../enums').ConnectionType
 
-const RedmineController = require('./services/redmine-controller')
+const RedmineServiceProvider = require('./services/redmine-service-provider')
 
-class ServiceController extends APIController {
+class ConnectionServiceProvider extends APIController {
   test() {
     let type = ConnectionType.get(this.object && this.object.type)
     if (!type) {
@@ -14,7 +14,7 @@ class ServiceController extends APIController {
     let controller
     switch (type) {
       case ConnectionType.Redmine:
-        controller = new RedmineController(this.object)
+        controller = new RedmineServiceProvider(this.object)
         break
     }
 
@@ -38,7 +38,7 @@ class ServiceController extends APIController {
     let controller
     switch (type) {
       case ConnectionType.Redmine:
-        controller = new RedmineController(this.object)
+        controller = new RedmineServiceProvider(this.object)
         break
     }
 
@@ -54,4 +54,4 @@ class ServiceController extends APIController {
   }
 }
 
-module.exports = ServiceController
+module.exports = ConnectionServiceProvider

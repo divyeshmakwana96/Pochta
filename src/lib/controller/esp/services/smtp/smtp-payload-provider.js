@@ -12,11 +12,9 @@ class SMTPPayloadProvider extends PayloadProvider {
       html: this.html
     }
 
-    if (this.hasCc()) {
-      payload.cc = this.getCc()
-    }
-
-    if (this.replyTo) { payload.replyTo = this.getReplyTo() }
+    if (this.hasCc()) { payload.cc = this.getCc() }
+    if (this.hasReplyTo()) { payload.replyTo = this.getReplyTo() }
+    if (this.hasAttachments()) { payload.attachments = this.getAttachments() }
     return payload
   }
 
