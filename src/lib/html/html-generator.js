@@ -1,5 +1,5 @@
 const mjml2html = require('mjml')
-const fs = require('fs')
+const fs = require('../helpers/fs')
 const path = require('../helpers/path')
 const minify = require('html-minifier').minify
 const cheerio = require('cheerio')
@@ -7,7 +7,7 @@ const validator = require('validator')
 const uniqueString = require('unique-string')
 const _ = require('lodash')
 
-class HtmlGenerator {
+class HTMLGenerator {
 
   constructor(filePath, hostServiceProvider, cacheManager, options) {
     this.filePath = filePath
@@ -15,19 +15,20 @@ class HtmlGenerator {
     this.cacheManager = cacheManager
 
     this._options = {
-      minify: options && options.minify || true,
-      enableContentID: options && options.enableContentID || true // not valid if host service provider is present
+      minify: options && options.minify || false,
+      embedType: options && options.embedType || 'cid', // not valid if host service provider is present
+      uploadPath: options && options.uploadPath || 'pochta/uploads'
     }
   }
 
-  generate() {
+  async generate() {
     if (!this.filePath) {
       throw new Error(`Filepath can't be empty`)
     } else if (_.find(['html', 'mjml'], this.filePath.split('.').pop())) {
       throw new Error('File must be html or mjml')
     }
 
-    let ext = path.extname(this.filePath)
+    let ext = path.extension(this.filePath)
 
     let _html // save html output for next operations
     /* MJML Parsing */
@@ -50,7 +51,6 @@ class HtmlGenerator {
     if (_html) {
       /* Manipulate html with cheerio */
       const $ = cheerio.load(_html)
-      let generator = this
 
       // 1) get title
       let title = $('title').text()
@@ -59,17 +59,36 @@ class HtmlGenerator {
       let attachments = []
 
       // 3) analyze, upload, manipulate image sources
+      // - collect all elements and loop async separately, each function is not thread safe
+      let elArr = []
+
+      // 3.1) loop images
       $('img').each(function() {
-        // console.log($(this))
-        const src = $(this).attr('src')
-        let newSrc = generator.handle(src, attachments)
-        $(this).attr('src', newSrc)
+        let el = $(this)
+        let src = el.attr('src')
+
+        if (src && src.length > 0 && !(validator.isURL(src) || validator.isBase64(src))) { // to avoid empty or url or base64 img tags
+          elArr.push({ $: el, attr: 'src', src: src })
+        }
       })
 
-      // 4) parse pdfs [TODO]
+      // 3.2) loop and gather cid or hosted links
+      let pathArr = _.uniq(_.map(elArr, (el) => { return el.src })) // To avoid redundant uploads
+      let pathMappings = []
+      for (let index = 0; index < pathArr.length; index++) {
+        let src = pathArr[index]
+        let url = await this.handle(src, attachments)
+        // console.log(`path: ${path}, url: ${url}`)
+        pathMappings.push({ src, url: url || src })
+      }
 
+      // Repack html with mappings
+      elArr.forEach((el) => {
+        let mapping = _.find(pathMappings, (map) => { return map.src === el.src })
+        el.$.attr(el.attr, mapping && mapping.url || el.src)
+      })
 
-      // 5) package html
+      // 4) package html
       let renderedHtml = $.html()
       let html = this._options.minify ? minify(renderedHtml, {
         processConditionalComments: true,
@@ -89,8 +108,8 @@ class HtmlGenerator {
     }
   }
 
-  handle(src, attachments) {
-    if (!validator.isURL(src)) {
+  async handle(src, attachments) {
+    if (!(validator.isURL(src) || validator.isBase64(src))) {
 
       let url
       if (this.cacheManager) {
@@ -100,30 +119,41 @@ class HtmlGenerator {
       if (url) {
         return url
       } else if (this.hostServiceProvider) {
-
-        console.log('should upload content')
-        // return await this.hostServiceProvider.upload(src, 'pochta/test')
-      } else if (this._options.enableContentID) {
+        try {
+          let url = await this.hostServiceProvider.upload(src, this._options.uploadPath)
+          if (this.cacheManager) {
+            this.cacheManager.putRemoteUrl(url, src)
+          }
+          return url
+        } catch (e) {
+          throw e
+        }
+      } else {
 
         let filename = path.basename(src)
         let filepath = path.join(path.dirname(this.filePath), src)
 
-        // generate cid and add as an attachment
-        let find = _.find(attachments, attachment => { return attachment.path === filepath })
-        if (find) {
-          return `cid:${find.cid}`
+        if (this._options.embedType === 'base64') {
+          return fs.base64Encoded(filepath)
         } else {
 
-          let cid = uniqueString()
-          // loop to get a name
-          attachments.push({
-            filename,
-            cid,
-            path: filepath,
-            contentType: path.mimeType(filepath),
-            contentDisposition: 'inline'
-          })
-          return `cid:${cid}`
+          // generate cid and add as an attachment
+          let find = _.find(attachments, attachment => { return attachment.path === filepath })
+          if (find) {
+            return `cid:${find.cid}`
+          } else {
+
+            let cid = uniqueString()
+            // loop to get a name
+            attachments.push({
+              filename,
+              cid,
+              path: filepath,
+              contentType: path.mimeType(filepath),
+              contentDisposition: 'inline'
+            })
+            return `cid:${cid}`
+          }
         }
       }
     }
@@ -131,4 +161,4 @@ class HtmlGenerator {
   }
 }
 
-module.exports = HtmlGenerator
+module.exports = HTMLGenerator

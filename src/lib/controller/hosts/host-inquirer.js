@@ -17,17 +17,58 @@ class HostInquirer extends CrudInquirer {
 
   // selection type
   askHostTypeSelection() {
+
+    let mapped = _.map(HostType.enums, (enm) => {
+      return {
+        name: Enums.describe(enm),
+        value: enm
+      }
+    })
+
     const question = [
       {
         name: 'type',
         type: 'list',
         message: 'Which image hosting provider you would like to add?',
-        choices: _.map(HostType.enums, (enm) => {
-          return {
-            name: enm.key,
-            value: enm
+        choices: _.sortBy(mapped, 'name')
+      }
+    ]
+
+    return inquirer.prompt(question)
+  }
+
+  // embed selection type
+  askEmbedTypeSelection(options) {
+    const question = [
+      {
+        name: 'type',
+        type: 'list',
+        message: 'How would you like to embed images?',
+        choices: [
+          {
+            name: 'CID attachments',
+            value: 'cid'
+          },
+          {
+            name: 'Inline embedding (base64)',
+            value: 'base64'
           }
-        })
+        ],
+        default: options && options.default
+      }
+    ]
+
+    return inquirer.prompt(question)
+  }
+
+  // selection type
+  askUploadDirectoryPath(path) {
+    const question = [
+      {
+        name: 'path',
+        type: 'input',
+        message: 'Please enter upload directory path:',
+        default: path
       }
     ]
 

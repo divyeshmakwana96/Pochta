@@ -27,7 +27,7 @@ class ESPServiceProvider extends APIServiceProvider {
       let choice = await profileInquirer.askSelection(profileController.getMapped(), 'Which profile would you like to send a test email to?')
 
       if (choice) {
-        return ora.task(controller.test(choice.profile.object), 'sending a test email..', 'email sent successfully!!', function (e) {
+        return ora.task(controller.test(choice.profile.object), 'sending a test email...', 'email sent successfully!!', function (e) {
 
           if (e instanceof Error) {
             return (e && e.response && e.response.data && (
@@ -48,7 +48,7 @@ class ESPServiceProvider extends APIServiceProvider {
     }
 
     let controller = this.getServiceProvider(type)
-    return ora.task(controller.send(from, to, cc, replyTo, subject, body, attachments), 'sending email..', 'email sent successfully!!', function (e) {
+    return ora.task(controller.send(from, to, cc, replyTo, subject, body, attachments), 'sending email...', 'email sent successfully!!', function (e) {
       if (e instanceof Error) {
         console.log(e)
         return (e && e.response && e.response.data && (

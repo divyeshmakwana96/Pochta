@@ -3,8 +3,8 @@ const inquirer = require('inquirer')
 const chalk = require('chalk')
 
 class ContactInquirer extends CrudInquirer {
-  constructor() {
-    super('contact')
+  constructor(entityName) {
+    super(entityName || 'contact')
   }
 
   askSetupQuestions(contact) {
@@ -29,6 +29,18 @@ class ContactInquirer extends CrudInquirer {
       }
     ]
     return inquirer.prompt(questions)
+  }
+
+  askShouldIncludeCC(shouldAddCc = false) {
+    const question = [
+      {
+        name: 'shouldAddCc',
+        type: 'confirm',
+        message: 'Would you like to add cc?',
+        default: shouldAddCc
+      }
+    ]
+    return inquirer.prompt(question)
   }
 }
 

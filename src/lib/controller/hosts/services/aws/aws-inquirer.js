@@ -14,25 +14,25 @@ class AWSInquirer extends CrudInquirer {
         name: 'label',
         type: 'input',
         message: `Enter a label ${chalk.gray('(optional)')}:`,
-        default: host && host.label || null
+        default: host && host.label
       },
       {
-        name: 'bucketName',
+        name: 'config.bucketName',
         type: 'input',
         message: 'Enter the bucket name:',
-        default: host && host.bucketName || null
+        default: host && host.config && host.config.bucketName
       },
       {
-        name: 'accessKeyId',
+        name: 'config.accessKeyId',
         type: 'input',
         message: 'Enter access key id:',
-        default: host && host.accessKeyId || null
+        default: host && host.config && host.config.accessKeyId
       },
       {
-        name: 'secretAccessKey',
+        name: 'config.secretAccessKey',
         type: 'input',
         message: 'Enter secret access key:',
-        default: host && host.secretAccessKey || null
+        default: host && host.config && host.config.secretAccessKey
       }
     ]
     return inquirer.prompt(questions)

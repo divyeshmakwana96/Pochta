@@ -14,13 +14,25 @@ class ImageKitInquirer extends CrudInquirer {
         name: 'label',
         type: 'input',
         message: `Enter a label ${chalk.gray('(optional)')}:`,
-        default: host && host.label || null
+        default: host && host.label
       },
       {
-        name: 'privateKey',
+        name: 'config.publicKey',
+        type: 'input',
+        message: 'Enter the public key:',
+        default: host && host.config && host.config.publicKey
+      },
+      {
+        name: 'config.privateKey',
         type: 'input',
         message: 'Enter the private key:',
-        default: host && host.privateKey || null
+        default: host && host.config && host.config.privateKey
+      },
+      {
+        name: 'config.id',
+        type: 'input',
+        message: 'Enter ImageKit id:',
+        default: host && host.config && host.config.id
       }
     ]
     return inquirer.prompt(questions)

@@ -16,6 +16,6 @@ async function task(promise, loadingMsg, successMsg, errorFormatter) {
 }
 
 module.exports = {
-  ...ora,
+  spinner: ora,
   task
 }

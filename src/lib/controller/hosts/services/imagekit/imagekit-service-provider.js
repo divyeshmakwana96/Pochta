@@ -1,21 +1,26 @@
-const axios = require('axios')
+const ImageKit = require("imagekit")
+const fs = require('fs')
 const APIServiceProvider = require('../../../api-service-provider')
 
-const BASE_URL = 'https://api.imagekit.io/v1'
-
 class ImageKitServiceProvider extends APIServiceProvider {
+
   test() {
-    return axios.get('/files', {
-      auth: {
-        username: this.object.privateKey,
-        password: ''
-      },
-      baseURL: BASE_URL
+    return this.getImageKit().upload({
+      file: 'R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+      fileName: 'TEST-FILE'
     })
   }
 
   upload(filepath, dir) {
 
+  }
+
+  getImageKit() {
+    return new ImageKit({
+      publicKey : this.object.config.publicKey,
+      privateKey : this.object.config.privateKey,
+      urlEndpoint : `https://ik.imagekit.io/${this.object.config.id}/`
+    })
   }
 }
 

@@ -11,33 +11,40 @@ class CrudInquirer {
     this.objectOptions = objectOptions || [OptionType.View, OptionType.Edit, OptionType.Delete]
   }
 
-  askSelection(objects, message) {
+  askSelection(objects, options) {
+    let entity = this.entityName || (options && options.entityName) || 'profile'
+
     if (objects && objects.length > 0) {
+      let selected = options && options.default && _.find(objects, _.matches({ value: { object: options.default }}))
+
       const question = [
         {
           name: 'profile',
           type: 'list',
-          message: message || `Which ${this.entityName || 'profile'} would you like to select?`,
-          choices: objects
+          message: `Which ${entity} would you like to select?`,
+          choices: objects,
+          default: selected && selected.value
         }
       ]
       return inquirer.prompt(question)
     } else {
-      throw new Error(`${this.entityName || 'profile'} list empty`)
+      throw new Error(`${entity}`)
     }
   }
 
-  askMultiSelection(objects, message, minChoiceCount = 0) {
+  askMultiSelection(objects, options) {
     if (objects && objects.length > 0) {
+
+      let min = options && options.minSelectionCount
       const question = [
         {
-          name: 'profile',
+          name: 'checked',
           type: 'checkbox',
-          message: message || `Select ${this.entityName || 'profile'}s you like to choose:`,
+          message: options && options.message || `Select ${this.entityName || 'profile'}s you like to choose:`,
           choices: objects,
           validate: (value) => {
-            if (value.length < minChoiceCount) {
-              return `Min ${minChoiceCount} selection${minChoiceCount > 0 && 's'} required`
+            if (value.length < min) {
+              return `Min ${min} ${this.entityName || 'profile'} selection${min > 0 && 's'} required`
             }
             return  true
           }
@@ -104,8 +111,6 @@ class CrudInquirer {
   separator(separatorString) {
     return new inquirer.Separator(separatorString)
   }
-
-
 }
 
 module.exports = CrudInquirer

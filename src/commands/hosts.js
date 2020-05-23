@@ -17,7 +17,8 @@ class HostsCommand extends CrudCommand {
     switch (option) {
       case OptionType.Test: {
         let service = new HostServiceProvider(host)
-        await service.test()
+        let res = await service.test()
+        console.log(res)
         break
       }
       default:

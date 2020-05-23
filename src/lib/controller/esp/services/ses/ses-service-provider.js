@@ -6,10 +6,12 @@ const _ = require('lodash')
 class SESServiceProvider extends SMTPServiceProvider {
   constructor(object) {
 
-    AWS.config.update(object.config)
     super(object, nodemailer.createTransport({
       SES: new AWS.SES({
-        apiVersion: '2010-12-01'
+        apiVersion: '2010-12-01',
+        accessKeyId: object.config.accessKeyId,
+        secretAccessKey: object.config.secretAccessKey,
+        region: object.config.region
       })
     }))
   }

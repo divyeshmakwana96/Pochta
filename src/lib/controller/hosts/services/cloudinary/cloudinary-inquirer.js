@@ -14,25 +14,25 @@ class CloudinaryInquirer extends CrudInquirer {
         name: 'label',
         type: 'input',
         message: `Enter a label ${chalk.gray('(optional)')}:`,
-        default: host && host.label || null
+        default: host && host.label
       },
       {
-        name: 'cloudName',
+        name: 'config.cloudName',
         type: 'input',
         message: 'Enter the cloud name:',
-        default: host && host.cloudName || null
+        default: host && host.config && host.config.cloudName
       },
       {
-        name: 'apiKey',
+        name: 'config.apiKey',
         type: 'input',
         message: 'Enter the api key:',
-        default: host && host.apiKey || null
+        default: host && host.config && host.config.apiKey
       },
       {
-        name: 'apiSecret',
+        name: 'config.apiSecret',
         type: 'input',
         message: 'Enter the api secret:',
-        default: host && host.apiSecret || null
+        default: host && host.config && host.config.apiSecret
       }
     ]
     return inquirer.prompt(questions)

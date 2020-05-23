@@ -159,5 +159,5 @@ DESCRIPTION
   Extra documentation goes here
 ```
 
-_See code: [src/commands/webshot.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/webshot.js)_
+_See code: [src/commands/capture.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/webshot.js)_
 <!-- commandsstop -->

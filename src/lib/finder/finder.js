@@ -1,53 +1,39 @@
 const fs = require('../helpers/fs')
-const path = require('path')
+const path = require('../helpers/path')
 
 const _ = require('lodash')
 
-module.exports = {
-  files: (dir = './', types = ['html', 'mjml'], recursive = false) => {
+const finder = {
+  defaultHtmlFileNames: ['index.mjml', 'default.mjml', 'main.mjml', 'index.html', 'default.html', 'main.html'],
+
+  files: (dir = '.', options) => {
+
     if (!fs.isDir(dir)) {
       throw new Error(`${dir} is not a directory`)
     }
 
-    return _.map(_.filter(fs.readdirSync(dir, { withFileTypes: true }), file => {
-      return !file.isDirectory() && _.includes(types, file.name.split('.').pop())
-    }), (file) => {
-      return {
-        name: file.name,
-        path: path.join(dir, file.name)
+    let recursive = options && options.recursive || false
+    let types = options && options.types
+
+    let files = fs.readdirSync(dir, { withFileTypes: true })
+    let out = []
+    files.forEach((file) => {
+      let _path = path.join(dir, file.name)
+
+      if (file.isDirectory() && recursive) {
+        out = _.concat(out, finder.files(_path, options))
+      } else {
+        if (!types || (types && _.includes(types, path.extension(_path)))) {
+          out.push({
+            name: file.name,
+            path: _path
+          })
+        }
       }
     })
-  },
 
-    findFilesInDirectory: (dir) => {
-        return new Promise((resolve, reject) => {
-
-            fs.stat(dir, (err, stats) => {
-
-                if (err) {
-                    reject(err)
-                } else if (stats.isDirectory()) {
-                    // read files
-                    fs.readdir(dir, { withFileTypes: true }, (err, files) => {
-                        if (err) {
-                            reject(err)
-                        } else {
-                            let filtered = _.filter(files, (file) => {
-                                return !((/(^|\/)\.[^\/\.]/g).test(file.name) || file.isDirectory())
-                                    && (/^.*\.(mjml|html)$/).test(file.name)
-                            })
-
-                            if (filtered.length > 0) {
-                                resolve(_.map(filtered, (file) => { return file.name }))
-                            } else {
-                                reject('Directory must contain mjml or html files')
-                            }
-                        }
-                    })
-                } else {
-                    reject('Provided path must be a directory')
-                }
-            })
-        })
-    }
+    return out
+  }
 }
+
+module.exports = finder

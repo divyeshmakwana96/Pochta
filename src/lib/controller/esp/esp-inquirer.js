@@ -76,29 +76,11 @@ class ESPInquirer extends CrudInquirer {
     }
   }
 
-  // Extra
-  askToIncludeCC() {
-    const question = [
-      {
-        name: 'shouldAddCc',
-        type: 'confirm',
-        message: 'Would you like to add cc?',
-        default: false
-      }
-    ]
-    return inquirer.prompt(question)
-  }
-
-  askMailComposeQuestions(subject, autoCc = true, autoReplyTo = true) {
+  // Auto CC
+  askMailComposeQuestions(autoCc = true, autoReplyTo = true) {
     const questions = [
       {
-        name: 'subject',
-        type: 'input',
-        message: 'Enter a subject line:',
-        default: subject
-      },
-      {
-        name: 'autoCc',
+        name: 'autoCC',
         type: 'confirm',
         message: 'Enable auto cc?',
         default: autoCc
@@ -111,6 +93,19 @@ class ESPInquirer extends CrudInquirer {
       }
     ]
     return inquirer.prompt(questions)
+  }
+
+  // attachments
+  shouldAddAttachments() {
+    const question = [
+      {
+        name: 'shouldAddAttachments',
+        type: 'confirm',
+        message: 'Would you like to add attachments?',
+        default: false
+      }
+    ]
+    return inquirer.prompt(question)
   }
 }
 

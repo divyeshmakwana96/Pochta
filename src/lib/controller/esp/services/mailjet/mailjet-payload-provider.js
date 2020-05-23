@@ -53,7 +53,7 @@ class MailJetPayloadProvider extends PayloadProvider {
 
   formatAttachment(attachment) {
     return {
-      // Base64Content: fs.readFileSyncBase64(attachment.path),
+      Base64Content: fs.readFileSyncBase64(attachment.path),
       ContentType: attachment.contentType,
       Filename: attachment.filename,
       ContentID: attachment.cid

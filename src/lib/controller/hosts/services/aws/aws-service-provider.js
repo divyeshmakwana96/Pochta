@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('../../../../helpers/path')
 const fs = require('fs')
 const AWS = require('aws-sdk')
 const APIServiceProvider = require('../../../api-service-provider')
@@ -7,33 +7,35 @@ AWS.config.setPromisesDependency(require('bluebird'))
 
 class AWSServiceProvider extends APIServiceProvider {
   test() {
-    const s3 = new AWS.S3({
-      accessKeyId: this.object.accessKeyId,
-      secretAccessKey: this.object.secretAccessKey
-    })
-
     const params = {
-      Bucket: this.object.bucketName,
+      Bucket: this.object.config.bucketName,
       Key: 'TEST-FILE', // File name you want to save as in S3
       Body: Buffer.alloc(0)
     }
 
-    return s3.upload(params).promise()
+    return this.getS3().upload(params).promise()
   }
 
   upload(filepath, dir) {
-    const s3 = new AWS.S3({
-      accessKeyId: this.object.accessKeyId,
-      secretAccessKey: this.object.secretAccessKey
-    })
+
+    let filename = path.basename(filepath)
 
     const params = {
-      Bucket: this.object.bucketName,
-      Key: path.join(dir, path.basename(filepath)),
-      Body: fs.createReadStream(filepath)
+      Bucket: this.object.config.bucketName,
+      Key: dir && path.join(dir, filename) || filepath,
+      ContentType: path.mimeType(filepath),
+      Body: fs.createReadStream(filepath),
+      ACL: 'public-read'
     }
 
-    return s3.upload(params).promise()
+    return this.getS3().upload(params).promise()
+  }
+
+  getS3() {
+    return new AWS.S3({
+      accessKeyId: this.object.config.accessKeyId,
+      secretAccessKey: this.object.config.secretAccessKey
+    })
   }
 }
 

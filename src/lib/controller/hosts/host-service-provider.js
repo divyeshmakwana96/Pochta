@@ -15,9 +15,9 @@ class HostServiceProvider extends APIServiceProvider {
 
     let controller = this.getServiceProvider(type)
     if (controller) {
-      return ora.task(controller.test(), 'testing..', 'success!!', function (e) {
+      return ora.task(controller.test(), 'testing...', 'success!!', function (e) {
         if (e instanceof Error) {
-          return (e && e.response && e.response.data && e.response.data.ErrorMessage)
+          return (e && e.response && ((e.response.data && e.response.data.ErrorMessage) || e.response.statusText))
         } else {
           return e
         }
@@ -25,7 +25,7 @@ class HostServiceProvider extends APIServiceProvider {
     }
   }
 
-  upload(filepath, dir) {
+  async upload(filepath, dir) {
     let type = HostType.get(this.object && this.object.type)
     if (!type) {
       throw new Error('Invalid host type')
@@ -33,8 +33,23 @@ class HostServiceProvider extends APIServiceProvider {
 
     let controller = this.getServiceProvider(type)
     if (controller) {
-      return controller.upload(filepath, dir)
+      let res
+      const spinner = ora.spinner(`uploading ${filepath}...`).start()
+      try {
+        res = await controller.upload(filepath, dir)
+      } catch (e) {
+        throw e
+      }
+      spinner.stop()
+
+      if (res) {
+        return res.Location /* AWS */
+          || res.secure_url /* Cloudinary */
+          || res.url /* ImageKit */
+      }
     }
+
+    throw new Error(`There was an error while uploading the file at path ${filepath}`)
   }
 
   getServiceProvider(type) {

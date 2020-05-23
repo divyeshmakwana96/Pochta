@@ -3,27 +3,14 @@ const crypto = require('../helpers/crypto')
 
 class UploadCacheProvider extends CacheProvider {
 
-  getRemoteUrl(imagePath) {
-    let find = this.db.get('uploads').find({ id: crypto.hashForFileAtPath(imagePath) })
+  getRemoteUrl(path) {
+    let find = this.db.get('uploads').find({ id: crypto.hashForFileAtPath(path) }).value()
     return find && find.url
   }
 
-  getRemoteUrls(imagePaths) {
-    let out = {}
-
-    let uploads = this.db.get('uploads')
-    imagePaths.forEach(imagePath => {
-      let find = uploads.find({ id: crypto.hashForFileAtPath(imagePath) })
-      if (find) {
-        out[imagePath] = find.url
-      }
-    })
-    return out
-  }
-
-  putRemoteUrl(url, imagePath) {
+  putRemoteUrl(url, path) {
     this.db.get('uploads').upsert({
-      id: crypto.hashForFileAtPath(imagePath),
+      id: crypto.hashForFileAtPath(path),
       url: url
     }).write()
   }
