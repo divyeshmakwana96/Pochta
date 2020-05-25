@@ -20,18 +20,27 @@ class ImageKitInquirer extends CrudInquirer {
         name: 'config.publicKey',
         type: 'input',
         message: 'Enter the public key:',
+        validate: key => {
+          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid public key'
+        },
         default: host && host.config && host.config.publicKey
       },
       {
         name: 'config.privateKey',
         type: 'input',
         message: 'Enter the private key:',
+        validate: key => {
+          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid private key'
+        },
         default: host && host.config && host.config.privateKey
       },
       {
         name: 'config.id',
         type: 'input',
         message: 'Enter ImageKit id:',
+        validate: key => {
+          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid ImageKit id'
+        },
         default: host && host.config && host.config.id
       }
     ]

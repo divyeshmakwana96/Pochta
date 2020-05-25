@@ -46,7 +46,7 @@ class CrudInquirer {
             if (value.length < min) {
               return `Min ${min} ${this.entityName || 'profile'} selection${min > 0 && 's'} required`
             }
-            return  true
+            return true
           }
         }
       ]

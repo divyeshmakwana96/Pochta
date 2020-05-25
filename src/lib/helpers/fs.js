@@ -1,5 +1,6 @@
 const fs = require('fs')
 const _path = require('./path')
+const _ = require('lodash')
 
 function isDir(path) {
   return fs.statSync(path).isDirectory()
@@ -14,9 +15,14 @@ function base64Encoded(path) {
 }
 
 function mkdirSyncIfNeeded(path) {
-  if (!fs.existsSync(path)) {
-    fs.mkdirSync(path)
-  }
+  let dirs = _.split(path, _path.sep)
+
+  let currentPath = ''
+  dirs.forEach(dir => {
+    let makePath = _path.join(currentPath, dir)
+    if (!fs.existsSync(makePath)) { fs.mkdirSync(makePath) }
+    currentPath = makePath
+  })
 }
 
 module.exports = {

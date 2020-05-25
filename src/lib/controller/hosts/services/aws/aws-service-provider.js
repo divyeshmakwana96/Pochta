@@ -1,4 +1,5 @@
 const path = require('../../../../helpers/path')
+const _ = require('lodash')
 const fs = require('fs')
 const AWS = require('aws-sdk')
 const APIServiceProvider = require('../../../api-service-provider')
@@ -16,7 +17,7 @@ class AWSServiceProvider extends APIServiceProvider {
     return this.getS3().upload(params).promise()
   }
 
-  upload(filepath, dir) {
+  upload(filepath, dir, tags) {
 
     let filename = path.basename(filepath)
 
@@ -25,10 +26,11 @@ class AWSServiceProvider extends APIServiceProvider {
       Key: dir && path.join(dir, filename) || filepath,
       ContentType: path.mimeType(filepath),
       Body: fs.createReadStream(filepath),
-      ACL: 'public-read'
+      ACL: 'public-read',
+      Tagging: tags && _.join(_.map(tags, tag => `${encodeURIComponent(tag.key)}=${encodeURIComponent(tag.value)}`), '&')
     }
 
-    return this.getS3().upload(params).promise()
+    return this.getS3().upload(params, tags).promise()
   }
 
   getS3() {

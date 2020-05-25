@@ -1,60 +1,35 @@
-const {Command, flags} = require('@oclif/command')
-const clear = require('clear')
+const {flags} = require('@oclif/command')
 const fs = require('../lib/helpers/fs')
 const ora = require('ora')
-const crypto = require('../lib/helpers/crypto')
 const path = require('path')
 const puppeteer = require('puppeteer-core')
 const PDFDocument = require('pdfkit')
 const _ = require('lodash')
 
-const finder = require('../lib/finder/finder')
+const BaseGeneratorCommand = require('../lib/command/base-generator-command')
 
-const Inquirer = require('../lib/controller/crud-inquirer')
-const HTMLGenerator = require('../lib/html/html-generator')
-
-class CaptureCommand extends Command {
+class CaptureCommand extends BaseGeneratorCommand {
   async run() {
+    await super.run()
+
     const {flags} = this.parse(CaptureCommand)
     const widths = flags.width
     const format = flags.format
     const quality = flags.quality
     const deviceScaleFactor = flags.dsf
 
-    console.log(widths)
+    // 1) ask file selection
+    let file = await this.askFileSelection()
+    if (!file) { return }
 
-    // clear all
-    clear()
+    // 2) html rendering
+    let rendered = await this.renderHTML(file, null, null, 'base64', false)
+    if (!rendered.html) { return }
 
-    // Global
-    let inquirer = new Inquirer()
-
-    // 1) files
-    let files = finder.files()
-    let defaultFileNames = finder.defaultHtmlFileNames
-
-    if (_.isEmpty(files)) { console.log(chalk.red(`No files found`)); return; }
-    let find = _.find(files, file => _.includes(defaultFileNames, file.name))
-
-    let mapped = _.map(files, (file) => {
-      return {
-        name: file.name,
-        value: { object: file }
-      }
-    })
-
-    let file = (await inquirer.askSelection(mapped, {
-      entity: 'file',
-      default: find
-    })).profile.object
-
+    // 3) spinner - just for fun
     let spinner = ora('capturing...').start()
-    // Generate html
-    let generator = new HTMLGenerator(file.path, null, null, {
-      embedType: 'base64'
-    })
-    let rendered = await generator.generate()
 
+    // 4) Capture
     // create captures directory if needed
     fs.mkdirSyncIfNeeded('captures')
 
@@ -65,7 +40,7 @@ class CaptureCommand extends Command {
     const page = await browser.newPage()
     await page.setContent(rendered.html, { waitUntil: 'networkidle2' })
 
-    let prefix = path.join(path.basename(path.resolve())) || 'screenshot'
+    let prefix = _.kebabCase(path.basename(path.resolve())) || 'screenshot'
     let ext = format === 'pdf' ? 'png' : format
     let exportPaths = []
 

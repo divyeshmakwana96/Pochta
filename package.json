@@ -17,7 +17,6 @@
     "chalk": "^4.0.0",
     "cheerio": "^1.0.0-rc.3",
     "clear": "^0.1.0",
-    "cli-progress": "^3.7.0",
     "cloudinary": "^1.21.0",
     "configstore": "^5.0.1",
     "crypto-random-string": "^3.2.0",
@@ -34,7 +33,6 @@
     "ora": "^4.0.3",
     "pdfkit": "^0.11.0",
     "puppeteer-core": "^3.0.3",
-    "unique-string": "^2.0.0",
     "validator": "^13.0.0"
   },
   "devDependencies": {

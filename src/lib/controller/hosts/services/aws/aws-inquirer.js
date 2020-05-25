@@ -1,5 +1,6 @@
 const CrudInquirer = require('../../../crud-inquirer')
 const inquirer = require('inquirer')
+const validator = require('validator')
 const chalk = require('chalk')
 
 class AWSInquirer extends CrudInquirer {
@@ -20,18 +21,27 @@ class AWSInquirer extends CrudInquirer {
         name: 'config.bucketName',
         type: 'input',
         message: 'Enter the bucket name:',
+        validate: key => {
+          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid bucket name'
+        },
         default: host && host.config && host.config.bucketName
       },
       {
         name: 'config.accessKeyId',
         type: 'input',
         message: 'Enter access key id:',
+        validate: key => {
+          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid access key id'
+        },
         default: host && host.config && host.config.accessKeyId
       },
       {
         name: 'config.secretAccessKey',
         type: 'input',
         message: 'Enter secret access key:',
+        validate: key => {
+          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid secret access key'
+        },
         default: host && host.config && host.config.secretAccessKey
       }
     ]

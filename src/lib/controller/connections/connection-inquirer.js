@@ -1,6 +1,7 @@
 const CrudInquirer = require('../crud-inquirer')
 const inquirer = require('inquirer')
 const chalk = require('chalk')
+const validator = require('validator')
 const _ = require('lodash')
 
 const Enums = require('../../enums')
@@ -70,12 +71,18 @@ class ConnectionInquirer extends CrudInquirer {
         name: 'config.baseURL',
         type: 'input',
         message: 'Enter Redmine url:',
+        validate: url => {
+          return validator.isURL(url, { require_protocol: true }) || 'Enter a valid url. Must include a valid protocol i.e. http, https'
+        },
         default: conn && conn.baseURL
       },
       {
         name: 'config.apiKey',
         type: 'input',
         message: 'Enter the api key:',
+        validate: key => {
+          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid api key'
+        },
         default: conn && conn.apiKey
       }
     ]

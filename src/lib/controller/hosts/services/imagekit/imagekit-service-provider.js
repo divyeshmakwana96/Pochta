@@ -1,5 +1,7 @@
 const ImageKit = require("imagekit")
 const fs = require('fs')
+const path = require('path')
+const _ = require('lodash')
 const APIServiceProvider = require('../../../api-service-provider')
 
 class ImageKitServiceProvider extends APIServiceProvider {
@@ -11,8 +13,19 @@ class ImageKitServiceProvider extends APIServiceProvider {
     })
   }
 
-  upload(filepath, dir) {
+  upload(filepath, dir, tags) {
+    try {
+      let data = fs.readFileSync(filepath)
 
+      return this.getImageKit().upload({
+        file: data,
+        folder: dir,
+        fileName: path.basename(filepath),
+        tags: tags && _.join(_.map(tags, 'value'))
+      })
+    } catch (e) {
+      throw e
+    }
   }
 
   getImageKit() {

@@ -1,6 +1,7 @@
 const CrudInquirer = require('../crud-inquirer')
 const inquirer = require('inquirer')
 const _ = require('lodash')
+const validator = require('validator')
 
 const Enums = require('../../enums')
 const HostType = Enums.HostType
@@ -37,37 +38,16 @@ class HostInquirer extends CrudInquirer {
     return inquirer.prompt(question)
   }
 
-  // embed selection type
-  askEmbedTypeSelection(options) {
-    const question = [
-      {
-        name: 'type',
-        type: 'list',
-        message: 'How would you like to embed images?',
-        choices: [
-          {
-            name: 'CID attachments',
-            value: 'cid'
-          },
-          {
-            name: 'Inline embedding (base64)',
-            value: 'base64'
-          }
-        ],
-        default: options && options.default
-      }
-    ]
-
-    return inquirer.prompt(question)
-  }
-
   // selection type
   askUploadDirectoryPath(path) {
     const question = [
       {
         name: 'path',
         type: 'input',
-        message: 'Please enter upload directory path:',
+        message: 'Please enter upload folder path:',
+        validate: key => {
+          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid upload folder path'
+        },
         default: path
       }
     ]

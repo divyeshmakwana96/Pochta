@@ -3,7 +3,7 @@ const _ = require('lodash')
 
 const OptionType = new Enum(['New', 'View', 'Edit', 'Delete', 'Test', 'Sync', 'Cancel'], { freeze: true, ignoreCase: true })
 const HostType = new Enum(['S3', 'Cloudinary', 'ImageKit'], { freeze: true, ignoreCase: true })
-const ESPType = new Enum(['Gmail', 'MES','SendGrid', 'MailJet', 'SES'], { freeze: true, ignoreCase: true })
+const ESPType = new Enum(['Gmail', 'MES','SendGrid', 'SendGrid_SMTP', 'MailJet', 'MailJet_SMTP', 'SES'], { freeze: true, ignoreCase: true })
 const ConnectionType = new Enum(['Redmine'], { freeze: true, ignoreCase: true })
 
 const describe = function (key) {
@@ -18,8 +18,12 @@ const describe = function (key) {
       return 'Microsft Exchange'
     case 'sendgrid':
       return 'SendGrid'
+    case 'sendgrid_smtp':
+      return 'SendGrid [SMTP]'
     case 'mailjet':
       return 'MailJet'
+    case 'mailjet_smtp':
+      return 'MailJet [SMTP]'
     case 'ses':
       return 'Amazon SES'
     default:

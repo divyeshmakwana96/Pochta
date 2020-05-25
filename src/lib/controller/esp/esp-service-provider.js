@@ -62,18 +62,15 @@ class ESPServiceProvider extends APIServiceProvider {
 
   getServiceProvider(type) {
     switch (type) {
-      case ESPType.Gmail:
-        return new SMTPServiceProvider(this.object)
       case ESPType.MailJet:
         return new MailJetServiceProvider(this.object)
-      case ESPType.MES:
-        return new SMTPServiceProvider(this.object)
       case ESPType.SendGrid:
         return new SendGridServiceProvider(this.object)
       case ESPType.SES:
         return new SESServiceProvider(this.object)
+      default:
+        return new SMTPServiceProvider(this.object)
     }
-    return super.getServiceProvider(type)
   }
 }
 

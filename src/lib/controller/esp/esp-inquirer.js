@@ -8,8 +8,10 @@ const OptionType = Enums.OptionType
 
 const GmailInquirer = require('./services/gmail/gmail-inquirer')
 const MailJetInquirer = require('./services/mailjet/mailjet-inquirer')
+const MailJetSMTPInquirer = require('./services/mailjet/mailjet-smtp-inquirer')
 const MESInquirer = require('./services/mes/mes-inquirer')
 const SendGridInquirer = require('./services/sendgrid/sendgrid-inquirer')
+const SendGridSMTPInquirer = require('./services/sendgrid/sendgrid-smtp-inquirer')
 const SESInquirer = require('./services/ses/ses-inquirer')
 
 class ESPInquirer extends CrudInquirer {
@@ -56,11 +58,17 @@ class ESPInquirer extends CrudInquirer {
         case ESPType.MailJet:
           controller = new MailJetInquirer()
           break
+        case ESPType.MailJet_SMTP:
+          controller = new MailJetSMTPInquirer()
+          break
         case ESPType.MES:
           controller = new MESInquirer()
           break
         case ESPType.SendGrid:
           controller = new SendGridInquirer()
+          break
+        case ESPType.SendGrid_SMTP:
+          controller = new SendGridSMTPInquirer()
           break
         case ESPType.SES:
           controller = new SESInquirer()
@@ -70,7 +78,6 @@ class ESPInquirer extends CrudInquirer {
 
     if (controller) {
       let answers = await controller.askSetupQuestions(esp)
-      console.log('POST')
       answers.type = esp.type
       return answers
     }

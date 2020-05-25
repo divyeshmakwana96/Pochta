@@ -16,7 +16,7 @@ class HTMLGenerator {
 
     this._options = {
       minify: options && options.minify || false,
-      embedType: options && options.embedType || 'cid', // not valid if host service provider is present
+      embedType: options && options.embedType, // not valid if host service provider is present
       uploadPath: options && options.uploadPath || 'pochta/uploads'
     }
   }
@@ -57,6 +57,7 @@ class HTMLGenerator {
 
       // 2) get attachments
       let attachments = []
+      let unresolved = []
 
       // 3) analyze, upload, manipulate image sources
       // - collect all elements and loop async separately, each function is not thread safe
@@ -77,8 +78,7 @@ class HTMLGenerator {
       let pathMappings = []
       for (let index = 0; index < pathArr.length; index++) {
         let src = pathArr[index]
-        let url = await this.handle(src, attachments)
-        // console.log(`path: ${path}, url: ${url}`)
+        let url = await this.handle(src, attachments, unresolved)
         pathMappings.push({ src, url: url || src })
       }
 
@@ -100,15 +100,16 @@ class HTMLGenerator {
 
       return {
         title,
+        html,
         attachments,
-        html
+        unresolved
       }
     } else {
       throw new Error(`There was an error while rendered the HTML source`)
     }
   }
 
-  async handle(src, attachments) {
+  async handle(src, attachments, unresolved) {
     if (!(validator.isURL(src) || validator.isBase64(src))) {
 
       let url
@@ -120,12 +121,13 @@ class HTMLGenerator {
         return url
       } else if (this.hostServiceProvider) {
         try {
-          let url = await this.hostServiceProvider.upload(src, this._options.uploadPath)
+          let url = await this.hostServiceProvider.upload(src, this._options.uploadPath, [{key: 'client', value: 'pochta'}])
           if (this.cacheManager) {
             this.cacheManager.putRemoteUrl(url, src)
           }
           return url
         } catch (e) {
+          console.log(e)
           throw e
         }
       } else {
@@ -135,7 +137,7 @@ class HTMLGenerator {
 
         if (this._options.embedType === 'base64') {
           return fs.base64Encoded(filepath)
-        } else {
+        } else if (this._options.embedType === 'cid') {
 
           // generate cid and add as an attachment
           let find = _.find(attachments, attachment => { return attachment.path === filepath })
@@ -154,9 +156,13 @@ class HTMLGenerator {
             })
             return `cid:${cid}`
           }
+        } else {
+          // we have to return relative paths as unresolved
+          unresolved.push({src, path: filepath})
         }
       }
     }
+
     return src
   }
 }

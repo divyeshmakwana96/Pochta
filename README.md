@@ -28,14 +28,66 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`pochta build`](#pochta-build)
+* [`pochta capture`](#pochta-capture)
+* [`pochta clear [ENTITY]`](#pochta-clear-entity)
 * [`pochta connections [ACTION]`](#pochta-connections-action)
 * [`pochta contacts [ACTION]`](#pochta-contacts-action)
-* [`pochta esp`](#pochta-esp)
+* [`pochta esp [ACTION]`](#pochta-esp-action)
 * [`pochta help [COMMAND]`](#pochta-help-command)
 * [`pochta hosts [ACTION]`](#pochta-hosts-action)
 * [`pochta profiles [ACTION]`](#pochta-profiles-action)
 * [`pochta send`](#pochta-send)
-* [`pochta webshot`](#pochta-webshot)
+
+## `pochta build`
+
+setup hosting environments and send mjml/html test emails
+
+```
+USAGE
+  $ pochta build
+
+OPTIONS
+  -c, --cache=cache  use upload cache
+```
+
+_See code: [src/commands/build.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/build.js)_
+
+## `pochta capture`
+
+Describe the command here
+
+```
+USAGE
+  $ pochta capture
+
+OPTIONS
+  -d, --dsf=dsf             [default: 1] device scale factor
+  -f, --format=jpg|png|pdf  [default: png] format which you would like to capture
+  -q, --quality=quality     [default: 80] capture quality (i.e. pdf, jpg)
+  -w, --width=width         [default: 800] capture widths comma separated
+
+DESCRIPTION
+  ...
+  Extra documentation goes here
+```
+
+_See code: [src/commands/capture.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/capture.js)_
+
+## `pochta clear [ENTITY]`
+
+Describe the command here
+
+```
+USAGE
+  $ pochta clear [ENTITY]
+
+DESCRIPTION
+  ...
+  Extra documentation goes here
+```
+
+_See code: [src/commands/clear.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/clear.js)_
 
 ## `pochta connections [ACTION]`
 
@@ -67,16 +119,13 @@ DESCRIPTION
 
 _See code: [src/commands/contacts.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/contacts.js)_
 
-## `pochta esp`
+## `pochta esp [ACTION]`
 
 Describe the command here
 
 ```
 USAGE
-  $ pochta esp
-
-OPTIONS
-  -n, --name=name  name to print
+  $ pochta esp [ACTION]
 
 DESCRIPTION
   ...
@@ -139,25 +188,10 @@ setup hosting environments and send mjml/html test emails
 ```
 USAGE
   $ pochta send
+
+OPTIONS
+  -c, --cache=cache  use upload cache
 ```
 
 _See code: [src/commands/send.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/send.js)_
-
-## `pochta webshot`
-
-Describe the command here
-
-```
-USAGE
-  $ pochta webshot
-
-OPTIONS
-  -n, --name=name  name to print
-
-DESCRIPTION
-  ...
-  Extra documentation goes here
-```
-
-_See code: [src/commands/capture.js](https://github.com/sleekuser/pochta/blob/v1.0.2/src/commands/webshot.js)_
 <!-- commandsstop -->

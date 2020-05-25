@@ -14,18 +14,27 @@ class SMTPInquirer extends CrudInquirer {
         name: 'config.auth.user',
         type: 'input',
         message: 'Enter the username:',
-        default: esp && esp.config && esp.config.auth && esp.config.auth.user
+        validate: key => {
+          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid username'
+        },
+        default: esp && esp.config && esp.config.auth && esp.config.auth.user || defaults.auth.user
       },
       {
         name: 'config.auth.pass',
         type: 'password',
         message: 'Enter the password:',
-        default: esp && esp.config && esp.config.auth && esp.config.auth.pass
+        validate: key => {
+          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid password'
+        },
+        default: esp && esp.config && esp.config.auth && esp.config.auth.pass || defaults.auth.pass
       },
       {
         name: 'config.sender',
         type: 'input',
         message: 'Enter email address:',
+        validate: key => {
+          return validator.isEmail(key) || 'Enter a valid email address'
+        },
         when: askSender,
         default: (answers) => {
           return (esp && esp.config && esp.config.sender) ||
@@ -36,6 +45,9 @@ class SMTPInquirer extends CrudInquirer {
         name: 'config.host',
         type: 'input',
         message: 'Enter the host name:',
+        validate: url => {
+          return validator.isURL(url) || 'Enter a valid host name'
+        },
         when: askHost,
         default: esp && esp.config && esp.config.host || defaults.host
       },
@@ -43,6 +55,9 @@ class SMTPInquirer extends CrudInquirer {
         name: 'config.port',
         type: 'input',
         message: 'Enter the port number:',
+        validate: port => {
+          return validator.isNumeric(port) || 'Enter a valid port number'
+        },
         default: esp && esp.config && esp.config.port || defaults.port
       },
       {

@@ -25,7 +25,7 @@ class HostServiceProvider extends APIServiceProvider {
     }
   }
 
-  async upload(filepath, dir) {
+  async upload(filepath, dir, tags) {
     let type = HostType.get(this.object && this.object.type)
     if (!type) {
       throw new Error('Invalid host type')
@@ -36,7 +36,7 @@ class HostServiceProvider extends APIServiceProvider {
       let res
       const spinner = ora.spinner(`uploading ${filepath}...`).start()
       try {
-        res = await controller.upload(filepath, dir)
+        res = await controller.upload(filepath, dir, tags)
       } catch (e) {
         throw e
       }

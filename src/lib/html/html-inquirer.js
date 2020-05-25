@@ -7,7 +7,7 @@ class HTMLInquirer {
       {
         name: 'minify',
         type: 'confirm',
-        message: 'Would you like to minify?',
+        message: 'Would you like to minify HTML?',
         default: shouldMinify
       }
     ]
@@ -21,6 +21,9 @@ class HTMLInquirer {
         name: 'subject',
         type: 'input',
         message: 'Enter a subject line:',
+        validate: key => {
+          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid subject line'
+        },
         default: subject || '[TEST]'
       }
     ]

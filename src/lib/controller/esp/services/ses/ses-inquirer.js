@@ -1,5 +1,6 @@
 const CrudInquirer = require('../../../crud-inquirer')
 const inquirer = require('inquirer')
+const validator = require('validator')
 const chalk = require('chalk')
 
 class SESInquirer extends CrudInquirer {
@@ -20,12 +21,18 @@ class SESInquirer extends CrudInquirer {
         name: 'config.accessKeyId',
         type: 'input',
         message: 'Enter access key id:',
+        validate: key => {
+          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid access key id'
+        },
         default: esp && esp.config && esp.config.accessKeyId
       },
       {
         name: 'config.secretAccessKey',
         type: 'input',
         message: 'Enter secret access key:',
+        validate: key => {
+          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid secret access key'
+        },
         default: esp && esp.config && esp.config.secretAccessKey
       },
       {
@@ -50,6 +57,9 @@ class SESInquirer extends CrudInquirer {
         name: 'config.sender',
         type: 'input',
         message: 'Enter the email address:',
+        validate: key => {
+          return validator.isEmail(key) || 'Enter a valid email address'
+        },
         default: esp && esp.config && esp.config.sender
       }
     ]
