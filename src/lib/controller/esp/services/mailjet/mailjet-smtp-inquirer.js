@@ -3,11 +3,15 @@ const _ = require('lodash')
 
 class MailJetSMTPInquirer extends SMTPInquirer {
   constructor() {
-    super('esp')
+    super({
+      promptAlias: true,
+      promptHost: false,
+      usernameAsEmail: false
+    })
   }
 
   async askSetupQuestions(esp) {
-    let answers = await super.askSetupQuestions(esp, true, false, {
+    let answers = await super.askSetupQuestions(esp, {
       port: 465,
       secure: true,
     })

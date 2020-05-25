@@ -3,11 +3,15 @@ const _ = require('lodash')
 
 class MESInquirer extends SMTPInquirer {
   constructor() {
-    super('esp')
+    super({
+      promptAlias: true,
+      promptHost: false,
+      usernameAsEmail: false
+    })
   }
 
   async askSetupQuestions(esp) {
-    let answers = await super.askSetupQuestions(esp, false, false, {
+    let answers = await super.askSetupQuestions(esp, {
       port: 587,
       secure: false,
     })

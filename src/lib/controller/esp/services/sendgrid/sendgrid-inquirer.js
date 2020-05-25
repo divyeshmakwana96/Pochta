@@ -17,22 +17,18 @@ class SendGridInquirer extends CrudInquirer {
         default: esp && esp.label
       },
       {
-        name: 'config.sender',
-        type: 'input',
-        message: 'Enter the sender email address:',
-        validate: key => {
-          return validator.isEmail(key) || 'Enter a valid email address'
-        },
-        default: esp && esp.config && esp.config.sender
-      },
-      {
         name: 'config.apiKey',
         type: 'input',
         message: 'Enter the api key:',
-        validate: key => {
-          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid api key'
-        },
-        default: esp && esp.config && esp.config.apiKey
+        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid api key',
+        default: esp && esp.config && esp.config.apiKey || null
+      },
+      {
+        name: 'config.sender',
+        type: 'input',
+        message: 'Enter the sender email address:',
+        validate: key => validator.isEmail(key) || 'Enter a valid email address',
+        default: esp && esp.config && esp.config.sender || null
       }
     ]
     return inquirer.prompt(questions)

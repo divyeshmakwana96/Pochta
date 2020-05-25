@@ -4,6 +4,7 @@ const ora = require('ora')
 const path = require('path')
 const puppeteer = require('puppeteer-core')
 const PDFDocument = require('pdfkit')
+const chalk = require('chalk')
 const _ = require('lodash')
 
 const BaseGeneratorCommand = require('../lib/command/base-generator-command')
@@ -25,6 +26,8 @@ class CaptureCommand extends BaseGeneratorCommand {
     // 2) html rendering
     let rendered = await this.renderHTML(file, null, null, 'base64', false)
     if (!rendered.html) { return }
+
+    console.log(`${chalk.keyword('orange')('Make sure you have Google Chrome installed!!!')}`)
 
     // 3) spinner - just for fun
     let spinner = ora('capturing...').start()

@@ -3,11 +3,15 @@ const _ = require('lodash')
 
 class GmailInquirer extends SMTPInquirer {
   constructor() {
-    super('esp')
+    super({
+      promptAlias: false,
+      promptHost: false,
+      usernameAsEmail: true
+    })
   }
 
   async askSetupQuestions(esp) {
-    let answers = await super.askSetupQuestions(esp, false, false, {
+    let answers = await super.askSetupQuestions(esp, {
       port: 465,
       secure: true,
     })

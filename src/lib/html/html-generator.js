@@ -120,16 +120,11 @@ class HTMLGenerator {
       if (url) {
         return url
       } else if (this.hostServiceProvider) {
-        try {
-          let url = await this.hostServiceProvider.upload(src, this._options.uploadPath, [{key: 'client', value: 'pochta'}])
-          if (this.cacheManager) {
-            this.cacheManager.putRemoteUrl(url, src)
-          }
-          return url
-        } catch (e) {
-          console.log(e)
-          throw e
+        let url = await this.hostServiceProvider.upload(src, this._options.uploadPath, [{key: 'client', value: 'pochta'}])
+        if (this.cacheManager) {
+          this.cacheManager.putRemoteUrl(url, src)
         }
+        return url
       } else {
 
         let filename = path.basename(src)

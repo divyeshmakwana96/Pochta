@@ -21,35 +21,31 @@ class SESInquirer extends CrudInquirer {
         name: 'config.accessKeyId',
         type: 'input',
         message: 'Enter access key id:',
-        validate: key => {
-          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid access key id'
-        },
-        default: esp && esp.config && esp.config.accessKeyId
+        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid access key id',
+        default: esp && esp.config && esp.config.accessKeyId || null
       },
       {
         name: 'config.secretAccessKey',
         type: 'input',
         message: 'Enter secret access key:',
-        validate: key => {
-          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid secret access key'
-        },
-        default: esp && esp.config && esp.config.secretAccessKey
+        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid secret access key',
+        default: esp && esp.config && esp.config.secretAccessKey || null
       },
       {
         name: 'config.region',
         type: 'list',
         message: 'Select a region:',
         choices: [
-          { name: 'US East (N. Virginia)', value: 'us-east-1' },
-          { name: 'US West (Oregon)', value: 'us-west-2' },
-          { name: 'Asia Pacific (Mumbai)', value: 'ap-south-1' },
-          { name: 'Asia Pacific (Sydney)', value: 'ap-southeast-2' },
-          { name: 'Canada (Central)', value: 'ca-central-1' },
-          { name: 'Europe (Frankfurt)', value: 'eu-central-1' },
-          { name: 'Europe (Ireland)', value: 'eu-west-1' },
-          { name: 'Europe (London)', value: 'eu-west-2' },
-          { name: 'South America (São Paulo)', value: 'sa-east-1' },
-          { name: 'AWS GovCloud (US)', value: 'us-gov-west-1' },
+          { name: 'US East (N. Virginia) [us-east-1]', value: 'us-east-1' },
+          { name: 'US West (Oregon) [us-west-2]', value: 'us-west-2' },
+          { name: 'Asia Pacific (Mumbai) [ap-south-1]', value: 'ap-south-1' },
+          { name: 'Asia Pacific (Sydney) [ap-southeast-2]', value: 'ap-southeast-2' },
+          { name: 'Canada (Central) [ca-central-1]', value: 'ca-central-1' },
+          { name: 'Europe (Frankfurt) [eu-central-1]', value: 'eu-central-1' },
+          { name: 'Europe (Ireland) [eu-west-1]', value: 'eu-west-1' },
+          { name: 'Europe (London) [eu-west-2]', value: 'eu-west-2' },
+          { name: 'South America (São Paulo) [sa-east-1]', value: 'sa-east-1' },
+          { name: 'AWS GovCloud (US) [us-gov-west-1]', value: 'us-gov-west-1' },
         ],
         default: esp && esp.config && esp.config.region
       },
@@ -57,10 +53,8 @@ class SESInquirer extends CrudInquirer {
         name: 'config.sender',
         type: 'input',
         message: 'Enter the email address:',
-        validate: key => {
-          return validator.isEmail(key) || 'Enter a valid email address'
-        },
-        default: esp && esp.config && esp.config.sender
+        validate: key => validator.isEmail(key) || 'Enter a valid email address',
+        default: esp && esp.config && esp.config.sender || null
       }
     ]
     return inquirer.prompt(questions)

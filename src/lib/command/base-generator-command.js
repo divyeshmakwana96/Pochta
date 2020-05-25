@@ -94,7 +94,7 @@ class BaseGeneratorCommand extends Command {
     // or ask upload directory
     let uploadPath, embedType
     if (host) {
-      let dir = useCacheForDirPaths && this.cacheManager.getMeta('host.path') || _.kebabCase(path.join(path.basename(path.resolve()), crypto.randomString()))
+      let dir = useCacheForDirPaths && this.cacheManager.getMeta('host.path') || path.join(_.kebabCase(path.basename(path.resolve())), crypto.randomString(16))
       uploadPath = (await hostInquirer.askUploadDirectoryPath(dir)).path
       useCacheForDirPaths && this.cacheManager.setMeta('host.path', uploadPath)
     } else {

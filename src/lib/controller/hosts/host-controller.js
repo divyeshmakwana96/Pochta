@@ -11,7 +11,10 @@ class HostController extends ModelController {
   getMapped(otherOptions) {
     let mapped = super.getMapped()
     if (otherOptions) {
-      mapped.push(new inquirer.Separator(`----------- other options ------------`))
+      if (mapped.length > 0) {
+        mapped.push(new inquirer.Separator(`----------- other options ------------`))
+      }
+
       if (otherOptions.cid) {
         mapped.push({
           name: `${chalk.bold('Embed images as mime objects')}, or ${chalk.bold('CID attachments')}`,

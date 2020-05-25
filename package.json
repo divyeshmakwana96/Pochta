@@ -70,7 +70,7 @@
       "@oclif/plugin-help"
     ]
   },
-  "repository": "sleekuser/pochta",
+  "repository": "divyeshmakwana96/pochta",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint .",

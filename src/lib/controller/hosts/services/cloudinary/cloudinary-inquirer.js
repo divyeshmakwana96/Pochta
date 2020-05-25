@@ -1,5 +1,6 @@
 const CrudInquirer = require('../../../crud-inquirer')
 const inquirer = require('inquirer')
+const validator = require('validator')
 const chalk = require('chalk')
 
 class CloudinaryInquirer extends CrudInquirer {
@@ -14,34 +15,28 @@ class CloudinaryInquirer extends CrudInquirer {
         name: 'label',
         type: 'input',
         message: `Enter a label ${chalk.gray('(optional)')}:`,
-        default: host && host.label
+        default: host && host.label || null
       },
       {
         name: 'config.cloudName',
         type: 'input',
         message: 'Enter the cloud name:',
-        validate: key => {
-          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid cloud name'
-        },
-        default: host && host.config && host.config.cloudName
+        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid cloud name',
+        default: host && host.config && host.config.cloudName || null
       },
       {
         name: 'config.apiKey',
         type: 'input',
         message: 'Enter the api key:',
-        validate: key => {
-          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid api key'
-        },
-        default: host && host.config && host.config.apiKey
+        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid api key',
+        default: host && host.config && host.config.apiKey || null
       },
       {
         name: 'config.apiSecret',
         type: 'input',
         message: 'Enter the api secret:',
-        validate: key => {
-          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid api secret'
-        },
-        default: host && host.config && host.config.apiSecret
+        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid api secret',
+        default: host && host.config && host.config.apiSecret || null
       }
     ]
     return inquirer.prompt(questions)
