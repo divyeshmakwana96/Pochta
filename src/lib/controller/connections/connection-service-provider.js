@@ -19,7 +19,7 @@ class ConnectionServiceProvider extends APIController {
     }
 
     if (controller) {
-      return ora(controller.test(), 'testing..', 'success!!', function (e) {
+      return ora.task(controller.test(), 'testing..', 'success!!', function (e) {
         if (e instanceof Error) {
           return (e && e.response && e.response.data && e.response.data.ErrorMessage)
         } else {
@@ -43,7 +43,7 @@ class ConnectionServiceProvider extends APIController {
     }
 
     if (controller) {
-      return ora(controller.sync(), 'syncing..', 'profiles and contacts are synced successfully with this connection!!', function (e) {
+      return ora.task(controller.sync(), 'syncing..', 'profiles and contacts are synced successfully with this connection!!', function (e) {
         if (e instanceof Error) {
           return (e && e.response && e.response.data && e.response.data.ErrorMessage)
         } else {

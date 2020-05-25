@@ -9,23 +9,11 @@ const ContactController = require('../../contacts/contact-controller')
 
 class RedmineServiceProvider extends APIController {
   test() {
-    return axios.get('/my/account.json', {
-      auth: {
-        username: this.object.apiKey,
-        password: uniqueString()
-      },
-      baseURL: this.object.config.baseURL
-    })
+    return axios.get('/my/account.json', this.getConfig())
   }
 
   async sync() {
-    const config = {
-      auth: {
-        username: this.object.config.apiKey,
-        password: uniqueString()
-      },
-      baseURL: this.object.config.baseURL
-    }
+    const config = this.getConfig()
 
     try {
       await axios.all([
@@ -49,6 +37,16 @@ class RedmineServiceProvider extends APIController {
       })
     } catch (e) {
       return Promise.reject(e)
+    }
+  }
+
+  getConfig() {
+    return {
+      auth: {
+        username: this.object.config.apiKey,
+        password: uniqueString()
+      },
+      baseURL: this.object.config.baseURL
     }
   }
 
