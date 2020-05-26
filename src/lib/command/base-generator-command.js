@@ -12,12 +12,12 @@ const UploadCacheProvider = require('../cache/upload-cache-provider')
 class BaseGeneratorCommand extends Command {
   async init() {
     this.cacheManager = new UploadCacheProvider()
+    this.useCache = true
   }
 
   async run() {
     // clear all
     clear()
-    this.useCache = true
   }
 
   // 1) Get files
