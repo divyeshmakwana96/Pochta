@@ -3,7 +3,7 @@ Pochta (почта)
 
 <h1 align="center">
   <br>
-  <img src="logo/pochta-logo.png" alt="Pochta" width="300">
+  <img src="logo/pochta-logo.png" alt="Pochta" width="230">
   <br>
 </h1>
 
