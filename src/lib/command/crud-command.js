@@ -82,7 +82,13 @@ class CrudCommand extends Command {
 }
 
 CrudCommand.args = [
-  { name: 'action' }
+  {
+    name: 'action',
+    required: true,
+    description: 'Action for the command',
+    default: 'list',
+    options: ['list', 'new'],
+  }
 ]
 
 module.exports = CrudCommand

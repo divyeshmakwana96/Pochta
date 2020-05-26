@@ -6,11 +6,9 @@ const HostInquirer = require('../lib/controller/hosts/host-inquirer')
 const OptionType = require('../lib/enums').OptionType
 
 class HostsCommand extends CrudCommand {
-  async run() {
+  async init() {
     this.controller = new HostController()
     this.inquirer = new HostInquirer()
-
-    await super.run()
   }
 
   async handleOption(option, host) {
@@ -26,9 +24,9 @@ class HostsCommand extends CrudCommand {
   }
 }
 
-HostsCommand.description = `Describe the command here
-...
-Extra documentation goes here
+HostsCommand.description = `Create, Read, Update, Delete and Test image hosting providers
+
+Configure your CDN provider with Pochta using this command. APIs needs to be enabled on the dedicated platforms in order to work with Pochta.
 `
 
 module.exports = HostsCommand

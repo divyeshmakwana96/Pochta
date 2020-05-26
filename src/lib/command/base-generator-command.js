@@ -1,4 +1,4 @@
-const {Command, flags} = require('@oclif/command')
+const {Command} = require('@oclif/command')
 
 const path = require('../helpers/path')
 const clear = require('clear')
@@ -10,17 +10,15 @@ const HTMLGenerator = require('../html/html-generator')
 const UploadCacheProvider = require('../cache/upload-cache-provider')
 
 class BaseGeneratorCommand extends Command {
-  async run() {
-    // clear all
-    clear()
-
-    // flag parsing
-    const {flags} = this.parse(BaseGeneratorCommand)
-    this.useCache = (flags.cache && !(flags.cache === 'false')) || this.getDefaultUseCacheWhenFlagEmpty()
+  async init() {
     this.cacheManager = new UploadCacheProvider()
   }
 
-  getDefaultUseCacheWhenFlagEmpty() { return true }
+  async run() {
+    // clear all
+    clear()
+    this.useCache = true
+  }
 
   // 1) Get files
   async askFileSelection() {
@@ -245,7 +243,7 @@ class BaseGeneratorCommand extends Command {
 
       let files = finder.files('.', {
         recursive: true,
-        types: ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'pdf', 'mp4', 'webm', 'mov', 'zip']
+        types: ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'pdf', 'mp4', 'webm', 'mov', 'zip', 'txt']
       })
 
       let mapped = _.map(files, (file) => {
@@ -270,13 +268,6 @@ class BaseGeneratorCommand extends Command {
       })
     }
   }
-}
-
-BaseGeneratorCommand.flags = {
-  cache: flags.string({
-    char: 'c',
-    description: 'use upload cache'
-  })
 }
 
 module.exports = BaseGeneratorCommand

@@ -1,3 +1,4 @@
+const {flags} = require('@oclif/command')
 const BaseGeneratorCommand = require('../lib/command/base-generator-command')
 const ESPServiceProvider = require('../lib/controller/esp/esp-service-provider')
 
@@ -6,6 +7,9 @@ const _ = require('lodash')
 class SendCommand extends BaseGeneratorCommand {
   async run() {
     await super.run()
+
+    const {flags} = this.parse(SendCommand)
+    this.useCache = (flags.cache && !(flags.cache === 'false')) || true
 
     // 1) ask file selection
     let file = await this.askFileSelection()
@@ -54,11 +58,26 @@ class SendCommand extends BaseGeneratorCommand {
     let attachments = additional ? _.concat(rendered.attachments, additional) : rendered.attachments
 
     // 12) SEND!!! Hurray
-    await new ESPServiceProvider(esp).send(from, to, cc, replyTo, subject, rendered.html, rendered.attachments)
+    await new ESPServiceProvider(esp).send(from, to, cc, replyTo, subject, rendered.html, attachments)
   }
 }
 
-SendCommand.description = `setup hosting environments and send mjml/html test emails
+SendCommand.description = `Build, export and send HTML/MJML files as test emails with attachments
+
+This command will provide a guide and selection process for sending out test emails. You can add additional attachments from the current directory with the email.
+
+Subject line is derived from html's <title> tag. If the tag is missing Pochta will set a default value.
+
+An Image hosting provider is not necessary since Pochta can embed images inline or as attachments.
+
+Currently supported attachment types are: 'jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'pdf', 'mp4', 'webm', 'mov', 'zip', 'txt'
 `
+
+SendCommand.flags = {
+  cache: flags.string({
+    char: 'c',
+    description: 'Boolean flag to enable/disable upload cache'
+  })
+}
 
 module.exports = SendCommand

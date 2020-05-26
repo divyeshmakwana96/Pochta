@@ -41,13 +41,20 @@ class ClearCommand extends Command {
   }
 }
 
-ClearCommand.description = `Describe the command here
-...
-Extra documentation goes here
+ClearCommand.description = `Clears cached settings
+This command will delete all the settings stored in a local directory or globally.
+
+If argument ${chalk.bold('cache')} is given, it will remove previous user selections and cdn upload cache stored for the current directory.
 `
 
 ClearCommand.args = [
-  { name: 'entity' }
+  {
+    name: 'entity',
+    required: true,
+    description: 'Entity you would like to clear',
+    default: 'cache',
+    options: ['cache'],
+  }
 ]
 
 module.exports = ClearCommand

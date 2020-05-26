@@ -1,12 +1,12 @@
 {
   "name": "pochta-mjml",
-  "description": "Test emails workflow simplified",
+  "description": "Testing emails simplified",
   "version": "1.0.2",
-  "author": "Divyesh Makwana (Home) @sleekuser",
+  "author": "Divyesh Makwana (Home) @divyeshmakwana96",
   "bin": {
     "pochta": "./bin/run"
   },
-  "bugs": "https://github.com/sleekuser/pochta/issues",
+  "bugs": "https://github.com/divyeshmakwana96/pochta/issues",
   "dependencies": {
     "@oclif/command": "^1.5.19",
     "@oclif/config": "^1.15.1",
@@ -54,7 +54,7 @@
     "/oclif.manifest.json",
     "/src"
   ],
-  "homepage": "https://github.com/sleekuser/pochta",
+  "homepage": "https://github.com/divyeshmakwana96/pochta",
   "keywords": [
     "mail",
     "mjml",

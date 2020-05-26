@@ -6,11 +6,9 @@ const ConnectionInquirer = require('../lib/controller/connections/connection-inq
 const OptionType = require('../lib/enums').OptionType
 
 class ConnectionsCommand extends CrudCommand {
-  async run() {
+  async init() {
     this.controller = new ConnectionController()
     this.inquirer = new ConnectionInquirer()
-
-    await super.run()
   }
 
   async handleOption(option, conn) {
@@ -27,9 +25,11 @@ class ConnectionsCommand extends CrudCommand {
   }
 }
 
-ConnectionsCommand.description = `Describe the command here
-...
-Extra documentation goes here
+ConnectionsCommand.description = `Create, Read, Update, Delete, Test and Sync connections
+
+A connection is a form of integration which enhances and/or aids existing functionalities of Pochta. Connections are built for manipulating root setting or adding features which don't belong to Pochta's core functionalities.
+
+Currently, only Redmine (version 4.0+) connection is supported. Adding this connection will sync contacts and user profile with your account.
 `
 
 module.exports = ConnectionsCommand
