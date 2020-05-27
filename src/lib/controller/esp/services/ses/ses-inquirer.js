@@ -21,14 +21,14 @@ class SESInquirer extends CrudInquirer {
         name: 'config.accessKeyId',
         type: 'input',
         message: 'Enter access key id:',
-        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid access key id',
+        validate: accessKeyId => !validator.isEmpty(accessKeyId, { ignore_whitespace: true }) || 'Enter a valid access key id',
         default: esp && esp.config && esp.config.accessKeyId || null
       },
       {
         name: 'config.secretAccessKey',
         type: 'input',
         message: 'Enter secret access key:',
-        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid secret access key',
+        validate: secretAccessKey => !validator.isEmpty(secretAccessKey, { ignore_whitespace: true }) || 'Enter a valid secret access key',
         default: esp && esp.config && esp.config.secretAccessKey || null
       },
       {
@@ -53,7 +53,7 @@ class SESInquirer extends CrudInquirer {
         name: 'config.sender',
         type: 'input',
         message: 'Enter the email address:',
-        validate: key => validator.isEmail(key) || 'Enter a valid email address',
+        validate: sender => validator.isEmail(sender) || 'Enter a valid email address',
         default: esp && esp.config && esp.config.sender || null
       }
     ]

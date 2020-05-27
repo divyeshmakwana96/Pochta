@@ -1,4 +1,6 @@
 const inquirer = require('inquirer')
+const validator = require('validator')
+const _ = require('lodash')
 
 class HTMLInquirer {
   // minify
@@ -16,15 +18,14 @@ class HTMLInquirer {
 
   // ask subject
   askSubjectLine(subject) {
+    subject = _.trim(subject)
     const question = [
       {
         name: 'subject',
         type: 'input',
         message: 'Enter a subject line:',
-        validate: key => {
-          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid subject line'
-        },
-        default: subject || '[TEST]'
+        validate: subject => !validator.isEmpty(subject, { ignore_whitespace: true }) || 'Enter a valid subject line',
+        default: _.trim(subject) || '[TEST]'
       }
     ]
     return inquirer.prompt(question)

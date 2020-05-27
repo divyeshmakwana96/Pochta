@@ -45,9 +45,7 @@ class HostInquirer extends CrudInquirer {
         name: 'path',
         type: 'input',
         message: 'Please enter upload folder path:',
-        validate: key => {
-          return !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid upload folder path'
-        },
+        validate: path => !validator.isEmpty(path, { ignore_whitespace: true }) || 'Enter a valid upload folder path',
         default: path
       }
     ]

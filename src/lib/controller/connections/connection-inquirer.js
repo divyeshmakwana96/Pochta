@@ -71,14 +71,14 @@ class ConnectionInquirer extends CrudInquirer {
         name: 'config.baseURL',
         type: 'input',
         message: 'Enter Redmine url:',
-        validate: url => validator.isURL(url, { require_protocol: true }) || 'Enter a valid url. Must include a valid protocol i.e. http, https',
+        validate: baseURL => validator.isURL(baseURL, { require_protocol: true }) || 'Enter a valid url. Must include a valid protocol i.e. http, https',
         default: conn && conn.baseURL
       },
       {
         name: 'config.apiKey',
         type: 'input',
         message: 'Enter the api key:',
-        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid api key',
+        validate: apiKey => !validator.isEmpty(apiKey, { ignore_whitespace: true }) || 'Enter a valid api key',
         default: conn && conn.apiKey
       }
     ]

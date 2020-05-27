@@ -176,7 +176,6 @@ class BaseGeneratorCommand extends Command {
 
     // if we found previous checked, then display them first
     if (checked.length > 0 && (checked.length !== contacts.length)) {
-      checked.push(inquirer.separator(`----------- other ------------`))
       list = _.union(checked, contacts)
     } else {
       list = contacts

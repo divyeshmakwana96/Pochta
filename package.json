@@ -1,7 +1,7 @@
 {
   "name": "pochta-mjml",
-  "description": "Testing MJML/HTML emails simplified",
-  "version": "1.1.0",
+  "description": "Testing MJML/HTML emails simplified. A serverless cli application solution for multiple integrations.",
+  "version": "1.1.1",
   "author": "Divyesh Makwana (Home) @divyeshmakwana96",
   "bin": {
     "pochta": "./bin/run"
@@ -55,12 +55,7 @@
     "/src"
   ],
   "homepage": "https://github.com/divyeshmakwana96/pochta",
-  "keywords": [
-    "mail",
-    "mjml",
-    "mailjet",
-    "cloudinary"
-  ],
+  "keywords": ["pochta", "email", "mjml", "mailjet", "cloudinary", "email-sender", "html-parser", "mjml-api", "e-blast", "distribution", "testing", "aws", "aws-s3", "aws-ses", "cloudinary-api", "imagekit", "smtp", "gmail", "sendgrid", "nodemailer", "cli", "cli-app"],
   "license": "MIT",
   "main": "src/index.js",
   "oclif": {

@@ -21,21 +21,21 @@ class AWSInquirer extends CrudInquirer {
         name: 'config.bucketName',
         type: 'input',
         message: 'Enter the bucket name:',
-        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid bucket name',
+        validate: bucketName => !validator.isEmpty(bucketName, { ignore_whitespace: true }) || 'Enter a valid bucket name',
         default: host && host.config && host.config.bucketName || null
       },
       {
         name: 'config.accessKeyId',
         type: 'input',
         message: 'Enter access key id:',
-        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid access key id',
+        validate: accessKeyId => !validator.isEmpty(accessKeyId, { ignore_whitespace: true }) || 'Enter a valid access key id',
         default: host && host.config && host.config.accessKeyId || null
       },
       {
         name: 'config.secretAccessKey',
         type: 'input',
         message: 'Enter secret access key:',
-        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid secret access key',
+        validate: secretAccessKey => !validator.isEmpty(secretAccessKey, { ignore_whitespace: true }) || 'Enter a valid secret access key',
         default: host && host.config && host.config.secretAccessKey || null
       }
     ]

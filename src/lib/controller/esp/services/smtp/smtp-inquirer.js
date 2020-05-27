@@ -54,7 +54,7 @@ class SMTPInquirer extends CrudInquirer {
         name: 'config.sender',
         type: 'input',
         message: 'Enter the email address:',
-        validate: key => validator.isEmail(key) || 'Enter a valid email address',
+        validate: sender => validator.isEmail(sender) || 'Enter a valid email address',
         when: this._options.promptAlias,
         default: answers => {
           return (esp && esp.config && esp.config.sender) ||
@@ -65,7 +65,7 @@ class SMTPInquirer extends CrudInquirer {
         name: 'config.host',
         type: 'input',
         message: 'Enter the host name:',
-        validate: url => validator.isURL(url) || 'Enter a valid host name',
+        validate: host => validator.isURL(host) || 'Enter a valid host name',
         when: this._options.promptHost,
         default: esp && esp.config && esp.config.host || defaults.host || null
       },

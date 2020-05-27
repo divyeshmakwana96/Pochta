@@ -1,6 +1,7 @@
 const _ = require('lodash')
 const APIServiceProvider = require('../api-service-provider')
 const ora = require('../../helpers/ora')
+const chalk = require('chalk')
 const ESPType = require('../../enums').ESPType
 
 const MailJetServiceProvider = require('./services/mailjet/mailjet-service-provider')
@@ -23,6 +24,9 @@ class ESPServiceProvider extends APIServiceProvider {
     if (controller) {
       // Ask which sender profile to select
       let profileController = new ProfileController()
+      let mapped = profileController.getMapped()
+      if (_.isEmpty(mapped)) { console.log(chalk.red(`No profiles found to test with this esp.`)); return }
+
       let profileInquirer = new ProfileInquirer()
       let choice = await profileInquirer.askSelection(profileController.getMapped(), 'Which profile would you like to send a test email to?')
 

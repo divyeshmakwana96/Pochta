@@ -53,7 +53,7 @@ class HTMLGenerator {
       const $ = cheerio.load(_html)
 
       // 1) get title
-      let title = $('title').text()
+      let subject = $('title').text()
 
       // 2) get attachments
       let attachments = []
@@ -99,7 +99,7 @@ class HTMLGenerator {
       }) : renderedHtml
 
       return {
-        title,
+        subject,
         html,
         attachments,
         unresolved

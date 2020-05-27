@@ -13,11 +13,15 @@ class PayloadProvider {
   }
 
   addTo(recipient) {
-    this.toRecipients = _.concat(this.toRecipients, recipient)
+    if (recipient) {
+      this.toRecipients = _.concat(this.toRecipients, recipient)
+    }
   }
 
   addCC(recipient) {
-    this.ccRecipients = _.concat(this.ccRecipients, recipient)
+    if (recipient) {
+      this.ccRecipients = _.concat(this.ccRecipients, recipient)
+    }
   }
 
   addAttachment(attachment) {

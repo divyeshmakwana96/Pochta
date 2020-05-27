@@ -20,21 +20,21 @@ class MailJetInquirer extends CrudInquirer {
         name: 'config.apiKey',
         type: 'input',
         message: 'Enter the api key:',
-        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid api key',
+        validate: apiKey => !validator.isEmpty(apiKey, { ignore_whitespace: true }) || 'Enter a valid api key',
         default: esp && esp.apiKey && esp.config.apiKey || null
       },
       {
         name: 'config.apiSecret',
         type: 'input',
         message: 'Enter the api secret:',
-        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid api secret',
+        validate: apiSecret => !validator.isEmpty(apiSecret, { ignore_whitespace: true }) || 'Enter a valid api secret',
         default: esp && esp.apiSecret && esp.config.apiSecret
       },
       {
         name: 'config.sender',
         type: 'input',
         message: 'Enter the sender email address:',
-        validate: key => validator.isEmail(key) || 'Enter a valid email address',
+        validate: sender => validator.isEmail(sender) || 'Enter a valid email address',
         default: esp && esp.config && esp.config.sender || null
       }
     ]

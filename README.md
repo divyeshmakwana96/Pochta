@@ -75,11 +75,11 @@ $ pochta capture -w 320 -w 800 -d 3 -f pdf
 
 
 ## Why Pochta?
-If you are using MJML app you can use MailJet integration to test your emails. However, you don't get an option to embed images as inline attachments or get to host on your preferred CDN directly.
+If you are using MJML app you can use MailJet integration to test your emails. However, neither your local images get hosted on MailJet server, nor you get an option to embed images as inline attachments or get to host on your preferred CDN directly.
 
-Of course, these limitations can be overcome by exporting html manually and/or updating image sources but, if your assets are constantly changing during development than this can be a tedious task.
+Of course, these limitations can be overcome by exporting html manually and/or updating image sources but, if your assets are constantly changing during the development, then this can be a tedious task.
 
-If you don't have a MailJet account than you're probably relying on Outlook 2010's stationary feature. Outlook is nutotious for changing html and will mess up your layouts in unintended ways.
+If you don't have a MailJet account than you're probably relying on Outlook 2010's stationary feature. Outlook is notorious for changing html content and will mess up your layouts in unintended ways.
 
 Pochta eliminates this limitations and you can have multiple CDN and ESP for your need. Additionally, you can build and export your email with a CDN provider for the e-blast distribution.
 

@@ -35,7 +35,7 @@ class ImageKitInquirer extends CrudInquirer {
         name: 'config.id',
         type: 'input',
         message: 'Enter ImageKit id:',
-        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid ImageKit id',
+        validate: id => !validator.isEmpty(id, { ignore_whitespace: true }) || 'Enter a valid ImageKit id',
         default: host && host.config && host.config.id || null
       }
     ]

@@ -21,21 +21,21 @@ class CloudinaryInquirer extends CrudInquirer {
         name: 'config.cloudName',
         type: 'input',
         message: 'Enter the cloud name:',
-        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid cloud name',
+        validate: cloudName => !validator.isEmpty(cloudName, { ignore_whitespace: true }) || 'Enter a valid cloud name',
         default: host && host.config && host.config.cloudName || null
       },
       {
         name: 'config.apiKey',
         type: 'input',
         message: 'Enter the api key:',
-        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid api key',
+        validate: apiKey => !validator.isEmpty(apiKey, { ignore_whitespace: true }) || 'Enter a valid api key',
         default: host && host.config && host.config.apiKey || null
       },
       {
         name: 'config.apiSecret',
         type: 'input',
         message: 'Enter the api secret:',
-        validate: key => !validator.isEmpty(key, { ignore_whitespace: true }) || 'Enter a valid api secret',
+        validate: apiSecret => !validator.isEmpty(apiSecret, { ignore_whitespace: true }) || 'Enter a valid api secret',
         default: host && host.config && host.config.apiSecret || null
       }
     ]
