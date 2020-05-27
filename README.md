@@ -111,7 +111,7 @@ $ npm install -g pochta-mjml
 $ pochta COMMAND
 running command...
 $ pochta (-v|--version|version)
-pochta-mjml/1.1.0 darwin-x64 node-v14.0.0
+pochta-mjml/1.1.1 darwin-x64 node-v14.0.0
 $ pochta --help [COMMAND]
 USAGE
   $ pochta COMMAND
@@ -151,7 +151,7 @@ DESCRIPTION
   cdn provider. If you want to enable cache use with --cache=true flag.
 ```
 
-_See code: [src/commands/build.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.0/src/commands/build.js)_
+_See code: [src/commands/build.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.1/src/commands/build.js)_
 
 ## `pochta capture`
 
@@ -189,7 +189,7 @@ DESCRIPTION
   The screenshot(s) will overwrite any existing files of the same names.
 ```
 
-_See code: [src/commands/capture.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.0/src/commands/capture.js)_
+_See code: [src/commands/capture.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.1/src/commands/capture.js)_
 
 ## `pochta clear ENTITY`
 
@@ -209,7 +209,7 @@ DESCRIPTION
   directory.
 ```
 
-_See code: [src/commands/clear.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.0/src/commands/clear.js)_
+_See code: [src/commands/clear.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.1/src/commands/clear.js)_
 
 ## `pochta connections ACTION`
 
@@ -230,7 +230,7 @@ DESCRIPTION
   profile with your account.
 ```
 
-_See code: [src/commands/connections.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.0/src/commands/connections.js)_
+_See code: [src/commands/connections.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.1/src/commands/connections.js)_
 
 ## `pochta contacts ACTION`
 
@@ -247,7 +247,7 @@ DESCRIPTION
   A contact is a form of recipients for supporting multiselect functionality to fill TO or CC fields.
 ```
 
-_See code: [src/commands/contacts.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.0/src/commands/contacts.js)_
+_See code: [src/commands/contacts.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.1/src/commands/contacts.js)_
 
 ## `pochta esp ACTION`
 
@@ -269,7 +269,7 @@ DESCRIPTION
   Configurations need to be setup on their dedicated platforms in order to work with Pochta.
 ```
 
-_See code: [src/commands/esp.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.0/src/commands/esp.js)_
+_See code: [src/commands/esp.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.1/src/commands/esp.js)_
 
 ## `pochta help [COMMAND]`
 
@@ -304,7 +304,7 @@ DESCRIPTION
   order to work with Pochta.
 ```
 
-_See code: [src/commands/hosts.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.0/src/commands/hosts.js)_
+_See code: [src/commands/hosts.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.1/src/commands/hosts.js)_
 
 ## `pochta profiles ACTION`
 
@@ -322,7 +322,7 @@ DESCRIPTION
   functionalities to auto include as cc or reply to.
 ```
 
-_See code: [src/commands/profiles.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.0/src/commands/profiles.js)_
+_See code: [src/commands/profiles.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.1/src/commands/profiles.js)_
 
 ## `pochta send`
 
@@ -347,5 +347,5 @@ DESCRIPTION
   'zip', 'txt'
 ```
 
-_See code: [src/commands/send.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.0/src/commands/send.js)_
+_See code: [src/commands/send.js](https://github.com/divyeshmakwana96/pochta/blob/v1.1.1/src/commands/send.js)_
 <!-- commandsstop -->
