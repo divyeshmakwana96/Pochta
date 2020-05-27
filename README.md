@@ -75,15 +75,14 @@ $ pochta capture -w 320 -w 800 -d 3 -f pdf
 
 
 ## Why Pochta?
-If you are using MJML app you can use MailJet integration to test your emails. However, neither your local images get hosted on MailJet server, nor you get an option to embed images as inline attachments or get to host on your preferred CDN directly.
+If you are using the MJML app you can use MailJet integration to test your emails. However, neither your local images get hosted on the MailJet server, nor you get an option to embed images as inline attachments. You also don't get to host on your preferred CDN directly.
 
-Of course, these limitations can be overcome by exporting html manually and/or updating image sources but, if your assets are constantly changing during the development, then this can be a tedious task.
+Of course, these limitations can be overcome by exporting HTML manually and/or updating image sources. If your assets are constantly changing during the development then it would be a tedious task.
 
-If you don't have a MailJet account than you're probably relying on Outlook 2010's stationary feature. Outlook is notorious for changing html content and will mess up your layouts in unintended ways.
+If you don't have a MailJet account then you're probably relying on Outlook 2010's stationary feature. The outlook is notorious for changing the HTML content and will mess up your layouts in unintended ways.
+Pochta eliminates these limitations, and you can have multiple CDN and ESP for your need. Additionally, you can build and export your email with a CDN provider for the e-blast distribution. Pochta will take care of parsing, uploading, and updating image sources for you. You will have multiple options to choose from for image distribution.
 
-Pochta eliminates this limitations and you can have multiple CDN and ESP for your need. Additionally, you can build and export your email with a CDN provider for the e-blast distribution.
-
-Pochta also has a built in **capture** feature which can take screenshots of your email for various devices widths and scale factors.  
+Pochta also has a built-in **capture** feature that can take screenshots of your email for various device widths and scale factors. You will be able to take Retina or higher size screenshots for the mobile devices.
 
 Below are some email and CDN service providers that are currently supported by Pochta:
 -----------
