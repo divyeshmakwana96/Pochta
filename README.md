@@ -10,8 +10,8 @@ Pochta (почта)
 <h4 align="center">Testing MJML/HTML emails simplified</h4>
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/pochta.svg)](https://npmjs.org/package/pochta)
-[![Downloads/week](https://img.shields.io/npm/dw/pochta.svg)](https://npmjs.org/package/pochta)
+[![Version](https://img.shields.io/npm/v/pochta.svg)](https://npmjs.org/package/pochta-mjml)
+[![Downloads/week](https://img.shields.io/npm/dw/pochta.svg)](https://npmjs.org/package/pochta-mjml)
 [![License](https://img.shields.io/npm/l/pochta.svg)](https://github.com/divyeshmakwana96/pochta/blob/master/package.json)
 
 ## Introduction
