@@ -3,6 +3,7 @@ const BaseGeneratorCommand = require('../lib/command/base-generator-command')
 const crypto = require('../lib/helpers/crypto')
 const path = require('../lib/helpers/path')
 const fs = require('../lib/helpers/fs')
+const emlformat = require('eml-format')
 const chalk = require('chalk')
 
 const ora = require('ora')
@@ -61,6 +62,16 @@ This command generates HTML by parsing MJML/HTML and hosting images to the dedic
 
 By default the cache is disabled, meaning on each usage of this command it will try to upload images to the preferred cdn provider. If you want to enable cache use with ${chalk.bold('--cache=true')} flag.
 `
+
+BuildCommand.args = [
+  {
+    name: 'format',
+    required: true,
+    description: 'Export format for the email',
+    default: 'zip',
+    options: ['eml', 'zip'],
+  }
+]
 
 BuildCommand.flags = {
   cache: flags.string({

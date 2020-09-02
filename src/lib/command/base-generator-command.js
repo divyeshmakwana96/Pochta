@@ -48,9 +48,7 @@ class BaseGeneratorCommand extends Command {
     for (let index = 0; index < defaultFileNames.length; index++) {
       let name = defaultFileNames[index]
       find = _.find(files, file => file.name === name)
-      if (find) {
-        break;
-      }
+      if (find) { break; }
     }
 
     //// get mapped
